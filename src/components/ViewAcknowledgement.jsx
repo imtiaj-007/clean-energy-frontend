@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
 
+import { usePaymentContext } from "../contexts/paymentContext"
+import Toast from "./Toast";
+
 
 const ViewAcknowledgement = ({ type, paymentObj, closeNewReciept }) => {
+    const { loading, getRecieptPDF } = usePaymentContext();
     return (
         <div className="gen-bill-tab m-auto" id="genBill" >
             <div className="card border-success ">
@@ -69,10 +73,11 @@ const ViewAcknowledgement = ({ type, paymentObj, closeNewReciept }) => {
                     </div>
                 </div>
                 <div className="card-footer d-flex justify-content-end ">
-                    <button className="btn btn-primary btn-sm mx-3 lable-width">Print</button>
+                    <button className="btn btn-primary btn-sm mx-3 lable-width" data-paymentid={paymentObj._id} onClick={getRecieptPDF}>Print</button>
                     <button className="btn btn-primary btn-sm mx-3 lable-width" onClick={closeNewReciept}>Close</button>
                 </div>
             </div>
+            {loading && <Toast mode={'Generating Reciept'} />}
         </div>
     )
 }

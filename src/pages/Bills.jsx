@@ -164,10 +164,6 @@ const Bills = () => {
         setShowTab('lastBill');
     }
 
-    // useEffect(() => {
-    //     fetchUsers("getAllUsers")
-    // }, [])
-
     return (
         <section className='container-fluid bills-page'>
             <div className="container outer-border my-4">

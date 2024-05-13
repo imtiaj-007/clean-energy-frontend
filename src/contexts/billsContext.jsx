@@ -8,6 +8,22 @@ const BillsProvider = (props)=>{
     const baseURL = "http://localhost:5000/api/bills";
     const [bills, setBills] = useState([]);
     const [filterObj, setFilterObj] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const getBillPDF = async(e)=> {
+        try {
+            setLoading(true);
+            const url = `http://localhost:5000/api/bills/createBill/${e.target.dataset.paymentid}`
+            const response = await axios.get(url, {
+                responseType: 'blob' // Set response type to 'blob' to receive binary data
+            });
+            const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            window.open(fileURL, '_blank');
+        } catch (error) {
+            console.error('Error downloading PDF:', error);
+        }
+        setLoading(false)
+    }
 
     const clearFilters = () => {
         setFilterObj({});
@@ -108,7 +124,7 @@ const BillsProvider = (props)=>{
 
 
     return (
-        <BillsContext.Provider value={{ bills, sendReq, getLastBill, fetchBills, createBill, updateBill, deleteBill, filterObj, setFilterObj, clearFilters }}>
+        <BillsContext.Provider value={{ bills, sendReq, getLastBill, fetchBills, createBill, updateBill, deleteBill, filterObj, setFilterObj, clearFilters, loading, getBillPDF }}>
             {props.children}
         </BillsContext.Provider>
     )

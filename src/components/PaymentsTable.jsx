@@ -1,12 +1,14 @@
 import { usePaymentContext } from "../contexts/paymentContext"
 import pdfIcon from '../assets/pdfIcon.svg'
+import PaymentOptions from "./PaymentOptions";
+import Toast from "./Toast";
 
 const PaymentsTable = () => {
-    const { payments } = usePaymentContext();
-
+    const { loading, payments, getRecieptPDF } = usePaymentContext();
+    
     return (
         <section className="payments-container container">
-            <h2 className='text-center mb-4'>Payments Table</h2>
+            <PaymentOptions />
             <div className="table-container">
                 <table className="table table-striped">
                     <thead>
@@ -33,7 +35,7 @@ const PaymentsTable = () => {
                                         <td>{element.amount}</td>
                                         <td>{element.method}</td>
                                         <td>{element.createdAt.substring(0, 10)}</td>
-                                        <td><img src={pdfIcon} alt="pdf-icon" /></td>
+                                        <td><img src={pdfIcon} alt="pdf-icon" data-paymentid={element._id} onClick={getRecieptPDF}/></td>
                                     </tr>
                                 )
                             })
@@ -42,6 +44,7 @@ const PaymentsTable = () => {
                     </tbody>
                 </table>
             </div>
+            {loading && <Toast mode={'Generating Reciept'}/>}
         </section>
     )
 }

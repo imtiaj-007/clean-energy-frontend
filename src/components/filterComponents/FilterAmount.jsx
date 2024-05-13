@@ -1,13 +1,16 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 
 import { useState } from "react"
 import { useBillsContext } from "../../contexts/billsContext";
+import { usePaymentContext } from "../../contexts/paymentContext";
 
 
-const FilterAmount = () => {
-    const { filterObj } = useBillsContext();
+const FilterAmount = ({ compType }) => {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(4000);
+
+    const { filterObj } = compType === 'bill' ? useBillsContext() : usePaymentContext();
 
     const minRange = document.getElementById('minRange');
     const minRangeVal = document.getElementById('minRangeVal');

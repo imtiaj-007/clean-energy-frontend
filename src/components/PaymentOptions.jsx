@@ -1,18 +1,16 @@
-/* eslint-disable react/prop-types */
-
 import { useState } from "react"
-import { useBillsContext } from "../contexts/billsContext";
+import { usePaymentContext } from "../contexts/paymentContext";
 
 import FilterDate from "./filterComponents/FilterDate";
 import FilterAmount from "./filterComponents/FilterAmount";
-import FilterUnits from "./filterComponents/FilterUnits";
 import FilterStatus from "./filterComponents/FilterStatus";
 
 import close from "../assets/close.svg"
 import filterClose from "../assets/filter-close.svg"
 
-const BillsOptions = () => {
-    const { sendReq, filterObj, clearFilters } = useBillsContext();
+
+const PaymentOptions = () => {
+    const { sendReq, filterObj, clearFilters } = usePaymentContext();
     const [viewOption, setViewOption] = useState("Date");
     const [filterBoxVisible, setFilterBoxVisible] = useState(false);
 
@@ -93,19 +91,15 @@ const BillsOptions = () => {
                                 <input type="radio" className="btn-check" name="filter-radio-options" id="optionAmount" data-name='Amount' autoComplete="off" checked={viewOption === 'Amount'} disabled={!localStorage.getItem('authToken') || localStorage.getItem('isAdmin') === "false"} onChange={toggleComponents} />
                                 <label className="btn btn-outline-primary " htmlFor="optionAmount">Amount</label>
 
-                                <input type="radio" className="btn-check" name="filter-radio-options" id="optionUnits" data-name='Units' autoComplete="off" checked={viewOption === 'Units'} disabled={!localStorage.getItem('authToken') || localStorage.getItem('isAdmin') === "false"} onChange={toggleComponents} />
-                                <label className="btn btn-outline-primary " htmlFor="optionUnits">Units</label>
-
                                 <input type="radio" className="btn-check" name="filter-radio-options" id="optionStatus" data-name='Status' autoComplete="off" checked={viewOption === 'Status'} disabled={!localStorage.getItem('authToken') || localStorage.getItem('isAdmin') === "false"} onChange={toggleComponents} />
                                 <label className="btn btn-outline-primary " htmlFor="optionStatus">Status</label>
                             </div>
 
                             <div className="filter-options col-9 d-flex">
                                 {
-                                    viewOption === 'Date' && <FilterDate compType={'bill'} /> ||
-                                    viewOption === 'Amount' && <FilterAmount compType={'bill'} /> ||
-                                    viewOption === 'Units' && <FilterUnits compType={'bill'} /> ||
-                                    viewOption === 'Status' && <FilterStatus compType={'bill'} />
+                                    viewOption === 'Date' && <FilterDate compType={'payment'} /> ||
+                                    viewOption === 'Amount' && <FilterAmount compType={'payment'} /> ||
+                                    viewOption === 'Status' && <FilterStatus compType={'payment'} />
                                 }
                             </div>
                         </div>
@@ -116,7 +110,8 @@ const BillsOptions = () => {
                     </div>
                 </section>}
         </section>
+
     )
 }
 
-export default BillsOptions
+export default PaymentOptions

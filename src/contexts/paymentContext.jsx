@@ -5,11 +5,60 @@ import axios from "axios"
 const paymentContext = createContext();
 
 const PaymentProvider = (props) => {
-    const baseURL = "http://localhost:5000/api/payments"
-    const [payments, setPayments] = useState([])
+    const baseURL = "http://localhost:5000/api/payments";
+    const [payments, setPayments] = useState([]);
+    const [filterObj, setFilterObj] = useState({});
+    const [loading, setLoading] = useState(false);
 
-    const fetchPayments = async() => {
-        const res = await axios.get(baseURL, {
+    const getRecieptPDF = async(e)=> {
+        try {
+            setLoading(true);
+            const url = `http://localhost:5000/api/payments/getPDF/${e.target.dataset.paymentid}`
+            const response = await axios.get(url, {
+                responseType: 'blob' // Set response type to 'blob' to receive binary data
+            });
+            const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            window.open(fileURL, '_blank');
+        } catch (error) {
+            console.error('Error downloading PDF:', error);
+        }
+        setLoading(false)
+    }
+
+    const clearFilters = () => {
+        setFilterObj({});
+        for (const property in Object.keys(filterObj)) {
+            delete filterObj[property];
+        }
+        sendReq();
+    }
+
+    const sendReq = ()=> {
+        let newUrl= `${baseURL}?`;
+        let sortArr = [];
+
+        console.log(filterObj)
+        for(const [key, value] of Object.entries(filterObj)) {
+            if( key === 'date' || key === 'amount' || key === 'unit') {
+                console.log(key, value)
+                sortArr.push(value);
+            }
+            else
+                newUrl = `${newUrl}${key}=${value}&`;
+        }
+        if(newUrl.at(-1) === '&') {
+            newUrl = newUrl.slice(0, -1);
+        }
+        
+        if(sortArr.length > 0) var sort = `sort=${sortArr.join(",")}`;
+        if(sort) newUrl = `${newUrl}&${sort}`;
+
+        console.log(newUrl)
+        fetchPayments(newUrl);
+    }
+
+    const fetchPayments = async(url) => {
+        const res = await axios.get(url, {
             headers: {
                 "Content-Type": "application/json",
                 "authToken": localStorage.getItem('authToken')
@@ -44,11 +93,12 @@ const PaymentProvider = (props) => {
     }
 
     useEffect(() => {
-        fetchPayments();
-    }, [])
+        if(localStorage.getItem('authToken'))
+            sendReq();
+    }, [filterObj])
 
     return (
-        <paymentContext.Provider value={{ payments, fetchPayments, createPayment, fetchLastPayment }}>
+        <paymentContext.Provider value={{ payments, fetchPayments, createPayment, fetchLastPayment, filterObj, sendReq, clearFilters, loading, getRecieptPDF }}>
             {props.children}
         </paymentContext.Provider>
     )

@@ -1,10 +1,12 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useBillsContext } from "../../contexts/billsContext";
+import { usePaymentContext } from "../../contexts/paymentContext";
 
 
-const FilterUnits = () => {
-    const { filterObj } = useBillsContext();
+const FilterUnits = ({ compType }) => {
+    const { filterObj } = compType === 'bill' ? useBillsContext() : usePaymentContext();
     const [minUnit, setMinUnit] = useState(0);
     const [maxUnit, setMaxUnit] = useState(500);
 

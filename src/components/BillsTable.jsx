@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
+import Toast from "./Toast";
 
 import { useBillsContext } from "../contexts/billsContext";
 import { useUserContext } from "../contexts/userContext";
 import BillsOptions from "./BillsOptions";
+import pdfIcon from '../assets/pdfIcon.svg'
 
 const BillsTable = () => {
-    const { bills } = useBillsContext();
+    const { bills, loading, getBillPDF } = useBillsContext();
     const { users } = useUserContext();
 
     return (
@@ -24,6 +26,7 @@ const BillsTable = () => {
                             <th scope="col">Amount</th>
                             <th scope="col">Status</th>
                             <th scope="col">Type</th>
+                            <th scope="col">View</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,6 +44,7 @@ const BillsTable = () => {
                                         <td>{bill.amount}</td>
                                         <td>{bill.status}</td>
                                         <td>{curUser ? curUser.connectionType : "NA"}</td>
+                                        <td><img src={pdfIcon} alt="pdf-icon" data-paymentid={bill._id} onClick={getBillPDF}/></td>
                                     </tr>
                                 )
                             })
@@ -49,6 +53,7 @@ const BillsTable = () => {
                     </tbody>
                 </table>
             </div>
+            {loading && <Toast mode={'Generating Bill'}/>}
         </section>
     )
 }

@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 
 import { useBillsContext } from "../../contexts/billsContext"
+import { usePaymentContext } from "../../contexts/paymentContext";
 
-const FilterDate = () => {
-    const { filterObj } = useBillsContext();
+const FilterDate = ({ compType }) => {
+    const { filterObj } = compType === 'bill' ? useBillsContext() : usePaymentContext();
 
     return (
         <section className="filter-date container">

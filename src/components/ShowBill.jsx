@@ -1,6 +1,10 @@
 /* eslint-disable react/prop-types */
 
+import { useBillsContext } from "../contexts/billsContext"
+import Toast from "./Toast";
+
 const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
+    const { loading, getBillPDF } = useBillsContext();
     return (
         <div className="gen-bill-tab m-auto" id="genBill" >
             <div className="card border-success ">
@@ -65,10 +69,11 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                     </div>
                 </div>
                 <div className="card-footer d-flex justify-content-end ">
-                    <button className="btn btn-primary btn-sm mx-3 lable-width">Print</button>
+                    <button className="btn btn-primary btn-sm mx-3 lable-width" data-paymentid={billObj._id} onClick={getBillPDF}>Print</button>
                     <button className="btn btn-primary btn-sm mx-3 lable-width" onClick={closeNewBill}>Close</button>
                 </div>
             </div>
+            {loading && <Toast />}
         </div>
     )
 }
