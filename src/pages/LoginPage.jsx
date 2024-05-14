@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import Toast from '../components/Toast'
 import loginImg from '../assets/login.jpg'
 
 
@@ -10,7 +9,7 @@ const LoginPage = () => {
     const Navigate = useNavigate()
     const [userDetails, setUserDetails] = useState({})
     const [showLoginForm, setshowLoginForm] = useState(true)
-
+    
     const toogleLogin = (e) => {
         e.preventDefault()
         setshowLoginForm(!showLoginForm)
@@ -126,7 +125,6 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
-            <Toast mode={'Tips'}/>
         </section>
     )
 }

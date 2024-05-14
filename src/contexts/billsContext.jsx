@@ -58,7 +58,7 @@ const BillsProvider = (props)=>{
     }
 
     const getLastBill = async (userID) => {
-        let newUrl = `${baseURL}/getbills/${userID}`;
+        let newUrl = `${baseURL}/${userID}`;
         console.log(newUrl)
         const res = await axios.get(newUrl, {
             headers: {

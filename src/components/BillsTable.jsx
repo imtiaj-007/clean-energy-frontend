@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import Toast from "./Toast";
 
 import { useBillsContext } from "../contexts/billsContext";
 import { useUserContext } from "../contexts/userContext";
 import BillsOptions from "./BillsOptions";
 import pdfIcon from '../assets/pdfIcon.svg'
+import Toast from "./Toast";
 
 const BillsTable = () => {
     const { bills, loading, getBillPDF } = useBillsContext();
@@ -53,7 +53,7 @@ const BillsTable = () => {
                     </tbody>
                 </table>
             </div>
-            {loading && <Toast mode={'Generating Bill'}/>}
+            {loading && <Toast mode={'Generating Bill'} />}
         </section>
     )
 }

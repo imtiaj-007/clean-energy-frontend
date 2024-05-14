@@ -5,6 +5,7 @@ import Toast from "./Toast";
 
 const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
     const { loading, getBillPDF } = useBillsContext();
+
     return (
         <div className="gen-bill-tab m-auto" id="genBill" >
             <div className="card border-success ">
@@ -73,7 +74,7 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                     <button className="btn btn-primary btn-sm mx-3 lable-width" onClick={closeNewBill}>Close</button>
                 </div>
             </div>
-            {loading && <Toast mode={'Loading'}/>}
+            {loading && <Toast mode={'Generating Bill'}/>}
         </div>
     )
 }

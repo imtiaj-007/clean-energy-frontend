@@ -7,6 +7,7 @@ import { useBillsContext } from '../contexts/billsContext';
 import ShowBill from '../components/ShowBill';
 import BillForm from '../components/BillForm';
 import ShowError from '../components/ShowError';
+import Toast from '../components/Toast';
 
 const Bills = () => {
     const { users } = useUserContext();
@@ -21,6 +22,15 @@ const Bills = () => {
     const [newBill, setNewBill] = useState({});
     const [type, setType] = useState('');
     const [errorObj, setErrorObj] = useState({});
+    const [toast, setToast] = useState({ mode: '', message: '', show: false });
+
+    const showToast = (mode, message) => {
+        setToast({ mode, message, show: true });
+    };
+
+    const hideToast = () => {
+        setToast(prevState => ({ ...prevState, show: false }));
+    };
 
     const getStatesObject = () => {
         const obj = {
@@ -46,22 +56,29 @@ const Bills = () => {
     }
 
     const findCustomer = () => {
-        const user = users.find((user) => user._id === search);
-        console.log(user)
-        if (user) {
+        try {
+            const user = users.find((user) => user._id === search);
+            if (!user) throw { message: "User not found...!" }
+
             for (const [key, value] of Object.entries(user)) {
                 curUser[key] = value;
             }
             setShowForm(true);
+
+            handleformType();
+            setCurUser(curUser)
+            console.log(curUser)
+        } catch (error) {
+            setErrorObj(error);
+            setShowTab('errorTab');
         }
-        handleformType();
-        setCurUser(curUser)
-        console.log(curUser)
     }
 
     const findBill = () => {
-        const bill = bills.find((bill) => bill._id === search);
-        if (bill) {
+        try {
+            const bill = bills.find((bill) => bill._id === search);
+            if (!bill) throw { message: "Bill not found...!" }
+
             const user = users.find((user) => user._id === bill.userID);
             for (const [key, value] of Object.entries(user)) {
                 curUser[key] = value;
@@ -73,10 +90,14 @@ const Bills = () => {
             setCurUser(user);
             setShowAmount(bill.amount);
             setShowForm(true);
+
+            handleformType();
+            setCurBill(bill)
+            console.log(curBill)
+        } catch (error) {
+            setErrorObj(error);
+            setShowTab('errorTab');
         }
-        handleformType();
-        setCurBill(bill)
-        console.log(curBill)
     }
 
     const changeAmount = (e) => {
@@ -150,18 +171,27 @@ const Bills = () => {
 
     const searchLastBill = async (e) => {
         e.preventDefault();
-        console.log(search)
-        const { bills, user } = await getLastBill(search);
-        for (const [key, value] of Object.entries(bills[0])) {
-            curBill[key] = value;
+
+        try {
+            const { bills, user } = await getLastBill(search);
+            for (const [key, value] of Object.entries(bills[0])) {
+                curBill[key] = value;
+            }
+            for (const [key, value] of Object.entries(user)) {
+                curUser[key] = value;
+            }
+            setCurBill(curBill);
+            setCurUser(curUser);
+            setType('Fetched');
+            setShowTab('lastBill');
+        } catch (error) {
+            console.log(error)
+            for (const [key, value] of Object.entries(error.response.data)) {
+                errorObj[key] = value;
+            }
+            setErrorObj(errorObj);
+            showToast('Error', error.response.data.message);
         }
-        for (const [key, value] of Object.entries(user)) {
-            curUser[key] = value;
-        }
-        setCurBill(curBill);
-        setCurUser(curUser);
-        setType('Fetched');
-        setShowTab('lastBill');
     }
 
     return (
@@ -278,6 +308,7 @@ const Bills = () => {
                 </div>
             }
             {localStorage.getItem('authToken') && <BillsTable />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
         </section>
     )
 }

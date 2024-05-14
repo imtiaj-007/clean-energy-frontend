@@ -8,8 +8,7 @@ const ShowError = ({ errorObj, closeNewBill }) => {
                 
                 <div className="card-body ">
                     <div className="input-group input-group-sm ">
-                        <label className="input-group-text lable-width" htmlFor="viewError">Message</label>
-                        <input type="text" className="form-control" id="viewError" value={errorObj.message} readOnly />
+                        <p>{errorObj.message}</p>
                     </div>
                 </div>
 
