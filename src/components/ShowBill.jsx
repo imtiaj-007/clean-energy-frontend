@@ -69,11 +69,11 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                     </div>
                 </div>
                 <div className="card-footer d-flex justify-content-end ">
-                    <button className="btn btn-primary btn-sm mx-3 lable-width" data-paymentid={billObj._id} onClick={getBillPDF}>Print</button>
+                    <button className="btn btn-primary btn-sm mx-3 lable-width" data-paymentid={billObj._id} onClick={getBillPDF} disabled={type === 'Deleted'}>Print</button>
                     <button className="btn btn-primary btn-sm mx-3 lable-width" onClick={closeNewBill}>Close</button>
                 </div>
             </div>
-            {loading && <Toast />}
+            {loading && <Toast mode={'Loading'}/>}
         </div>
     )
 }

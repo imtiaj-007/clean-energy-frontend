@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
+
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
 const UserProvider = (props)=>{
-    const baseURL = "http://localhost:5000/api/users/getAllUsers";
+    const baseURL = import.meta.env.VITE_USER_BASE_URL;
     const [users, setUsers] = useState([]);
 
     const fetchUsers = async() => {

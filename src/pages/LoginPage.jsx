@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Toast from '../components/Toast'
 import loginImg from '../assets/login.jpg'
 
 
@@ -125,6 +126,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
+            <Toast mode={'Tips'}/>
         </section>
     )
 }

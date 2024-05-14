@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const BillsContext = createContext();
 
 const BillsProvider = (props)=>{
-    const baseURL = "http://localhost:5000/api/bills";
+    const baseURL = import.meta.env.VITE_BILL_BASE_URL;
     const [bills, setBills] = useState([]);
     const [filterObj, setFilterObj] = useState({});
     const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ const BillsProvider = (props)=>{
     const getBillPDF = async(e)=> {
         try {
             setLoading(true);
-            const url = `http://localhost:5000/api/bills/createBill/${e.target.dataset.paymentid}`
+            const url = `${baseURL}/createBill/${e.target.dataset.paymentid}`
             const response = await axios.get(url, {
                 responseType: 'blob' // Set response type to 'blob' to receive binary data
             });
@@ -34,7 +34,7 @@ const BillsProvider = (props)=>{
     }
 
     const sendReq = ()=> {
-        let newUrl= `${baseURL}/getbills?`;
+        let newUrl= `${baseURL}?`;
         let sortArr = [];
 
         console.log(filterObj)
@@ -124,7 +124,7 @@ const BillsProvider = (props)=>{
 
 
     return (
-        <BillsContext.Provider value={{ bills, sendReq, getLastBill, fetchBills, createBill, updateBill, deleteBill, filterObj, setFilterObj, clearFilters, loading, getBillPDF }}>
+        <BillsContext.Provider value={{ bills, sendReq, fetchBills, createBill, updateBill, deleteBill, getLastBill, getBillPDF, filterObj, setFilterObj, clearFilters, loading }}>
             {props.children}
         </BillsContext.Provider>
     )

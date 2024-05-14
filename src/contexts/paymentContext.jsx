@@ -5,7 +5,7 @@ import axios from "axios"
 const paymentContext = createContext();
 
 const PaymentProvider = (props) => {
-    const baseURL = "http://localhost:5000/api/payments";
+    const baseURL = import.meta.env.VITE_PAYMENT_BASE_URL;
     const [payments, setPayments] = useState([]);
     const [filterObj, setFilterObj] = useState({});
     const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ const PaymentProvider = (props) => {
     const getRecieptPDF = async(e)=> {
         try {
             setLoading(true);
-            const url = `http://localhost:5000/api/payments/getPDF/${e.target.dataset.paymentid}`
+            const url = `${baseURL}/receipt/${e.target.dataset.paymentid}`
             const response = await axios.get(url, {
                 responseType: 'blob' // Set response type to 'blob' to receive binary data
             });
@@ -98,7 +98,7 @@ const PaymentProvider = (props) => {
     }, [filterObj])
 
     return (
-        <paymentContext.Provider value={{ payments, fetchPayments, createPayment, fetchLastPayment, filterObj, sendReq, clearFilters, loading, getRecieptPDF }}>
+        <paymentContext.Provider value={{ payments, fetchPayments, createPayment, fetchLastPayment, getRecieptPDF, filterObj, sendReq, clearFilters, loading }}>
             {props.children}
         </paymentContext.Provider>
     )
