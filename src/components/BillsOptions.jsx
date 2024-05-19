@@ -90,13 +90,13 @@ const BillsOptions = () => {
                                 <input type="radio" className="btn-check" name="filter-radio-options" id="optionDate" data-name='Date' autoComplete="off" checked={viewOption === 'Date'} onChange={toggleComponents} />
                                 <label className="btn btn-outline-primary " htmlFor="optionDate">Date</label>
 
-                                <input type="radio" className="btn-check" name="filter-radio-options" id="optionAmount" data-name='Amount' autoComplete="off" checked={viewOption === 'Amount'} disabled={!localStorage.getItem('authToken') || localStorage.getItem('isAdmin') === "false"} onChange={toggleComponents} />
+                                <input type="radio" className="btn-check" name="filter-radio-options" id="optionAmount" data-name='Amount' autoComplete="off" checked={viewOption === 'Amount'} onChange={toggleComponents} />
                                 <label className="btn btn-outline-primary " htmlFor="optionAmount">Amount</label>
 
-                                <input type="radio" className="btn-check" name="filter-radio-options" id="optionUnits" data-name='Units' autoComplete="off" checked={viewOption === 'Units'} disabled={!localStorage.getItem('authToken') || localStorage.getItem('isAdmin') === "false"} onChange={toggleComponents} />
+                                <input type="radio" className="btn-check" name="filter-radio-options" id="optionUnits" data-name='Units' autoComplete="off" checked={viewOption === 'Units'} onChange={toggleComponents} />
                                 <label className="btn btn-outline-primary " htmlFor="optionUnits">Units</label>
 
-                                <input type="radio" className="btn-check" name="filter-radio-options" id="optionStatus" data-name='Status' autoComplete="off" checked={viewOption === 'Status'} disabled={!localStorage.getItem('authToken') || localStorage.getItem('isAdmin') === "false"} onChange={toggleComponents} />
+                                <input type="radio" className="btn-check" name="filter-radio-options" id="optionStatus" data-name='Status' autoComplete="off" checked={viewOption === 'Status'} onChange={toggleComponents} />
                                 <label className="btn btn-outline-primary " htmlFor="optionStatus">Status</label>
                             </div>
 

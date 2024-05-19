@@ -3,12 +3,19 @@ import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import loginImg from '../assets/login.jpg'
+import Toast from '../components/Toast'
 
 
 const LoginPage = () => {
+    const baseURL = import.meta.env.VITE_USER_BASE_URL;
     const Navigate = useNavigate()
     const [userDetails, setUserDetails] = useState({})
     const [showLoginForm, setshowLoginForm] = useState(true)
+    const [toast, setToast] = useState({ mode: 'Error', message: '', show: false });
+
+    const hideToast = () => {
+        setToast(prevState => ({ ...prevState, show: false }));
+    };
     
     const toogleLogin = (e) => {
         e.preventDefault()
@@ -20,22 +27,27 @@ const LoginPage = () => {
         e.preventDefault()
         console.log(userDetails)
 
-        const res = await axios.post('http://localhost:5000/api/users/login', userDetails, {
-            headers: {
-                "Content-Type": 'application/json'
+        try {
+            const res = await axios.post(`${baseURL}/login`, userDetails, {
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            })
+            const token = res.data.authToken
+    
+            if (token) {
+                localStorage.setItem('authToken', res.data.authToken)
+                localStorage.setItem('isAdmin', res.data.isAdmin)
+                
+                if(localStorage.getItem('isAdmin') === 'true')
+                    Navigate('/users')
+                else
+                    Navigate('/bills')
+                window.location.reload()
             }
-        })
-        const token = res.data.authToken
-
-        if (token) {
-            localStorage.setItem('authToken', res.data.authToken)
-            localStorage.setItem('isAdmin', res.data.isAdmin)
-            
-            if(localStorage.getItem('isAdmin') === 'true')
-                Navigate('/users')
-            else
-                Navigate('/bills')
-            window.location.reload()
+        } catch (error) {
+            let message = error.response.data.message;
+            setToast({ mode: toast.mode, message , show: true });
         }
     }
 
@@ -43,18 +55,23 @@ const LoginPage = () => {
         e.preventDefault()
         console.log(userDetails)
             
-        const res = await axios.post('http://localhost:5000/api/users/signup', userDetails, {
-            headers: {
-                "Content-Type": 'application/json'
+        try {
+            const res = await axios.post(`${baseURL}/signup`, userDetails, {
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            })
+            const token = res.data.authToken
+    
+            if (token) {
+                localStorage.setItem('authToken', res.data.authToken)
+                localStorage.setItem('isAdmin', res.data.isAdmin)
+                Navigate('/bills')
+                window.location.reload()
             }
-        })
-        const token = res.data.authToken
-
-        if (token) {
-            localStorage.setItem('authToken', res.data.authToken)
-            localStorage.setItem('isAdmin', res.data.isAdmin)
-            Navigate('/bills')
-            window.location.reload()
+        } catch (error) {
+            let message = error.response.data.message;
+            setToast({ mode: toast.mode, message , show: true });   
         }
     }
 
@@ -125,6 +142,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
+            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
         </section>
     )
 }

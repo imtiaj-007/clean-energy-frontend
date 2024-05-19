@@ -9,7 +9,7 @@ const ViewAcknowledgement = ({ type, paymentObj, closeNewReciept }) => {
     return (
         <div className="gen-bill-tab m-auto" id="genBill" >
             <div className="card border-success ">
-                <div className="card-header header-success">{`Bill ${type} Successfull`}</div>
+                <div className="card-header header-success">{`Reciept ${type} Successfully`}</div>
                 <div className="card-body ">
 
                     <div className="row g-3 ">

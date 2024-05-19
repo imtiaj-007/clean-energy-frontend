@@ -10,8 +10,8 @@ import ShowError from '../components/ShowError';
 import Toast from '../components/Toast';
 
 const Bills = () => {
-    const { users } = useUserContext();
-    const { bills, getLastBill, createBill, updateBill, deleteBill } = useBillsContext();
+    const { fetchUserByID } = useUserContext();
+    const { getBillByID, getBillsByUserID, createBill, updateBill, deleteBill } = useBillsContext();
 
     const [showTab, setShowTab] = useState('viewBill');
     const [search, setSearch] = useState('');
@@ -55,47 +55,32 @@ const Bills = () => {
         }
     }
 
-    const findCustomer = () => {
+    const findCustomer = async () => {
         try {
-            const user = users.find((user) => user._id === search);
-            if (!user) throw { message: "User not found...!" }
-
-            for (const [key, value] of Object.entries(user)) {
-                curUser[key] = value;
-            }
-            setShowForm(true);
-
+            const res = await fetchUserByID(search);
+            setCurUser(res.data.user)
             handleformType();
-            setCurUser(curUser)
-            console.log(curUser)
+            setShowForm(true);
         } catch (error) {
-            setErrorObj(error);
+            setErrorObj(error.response.data);
             setShowTab('errorTab');
         }
     }
 
-    const findBill = () => {
+    const findBill = async () => {
         try {
-            const bill = bills.find((bill) => bill._id === search);
-            if (!bill) throw { message: "Bill not found...!" }
+            const res1 = await getBillByID(search);
+            const res2 = await fetchUserByID(res1.data.bill.userID);
 
-            const user = users.find((user) => user._id === bill.userID);
-            for (const [key, value] of Object.entries(user)) {
-                curUser[key] = value;
-            }
-            for (const [key, value] of Object.entries(bill)) {
-                curBill[key] = value;
-            }
-
-            setCurUser(user);
-            setShowAmount(bill.amount);
+            setCurBill(res1.data.bill);
+            setCurUser(res2.data.user);
+            setShowAmount(res1.data.bill.amount);
+            handleformType();
             setShowForm(true);
 
-            handleformType();
-            setCurBill(bill)
-            console.log(curBill)
         } catch (error) {
-            setErrorObj(error);
+            console.log(error)
+            setErrorObj(error.response.data);
             setShowTab('errorTab');
         }
     }
@@ -134,32 +119,17 @@ const Bills = () => {
                     bill = await deleteBill(curUser);
                 console.log(bill)
             }
-            for (const [key, value] of Object.entries(bill)) {
-                newBill[key] = value;
-            }
             setNewBill(bill);
             setShowTab('newBill')
 
         } catch (error) {
-            for (const [key, value] of Object.entries(error.response.data)) {
-                errorObj[key] = value;
-            }
-            setErrorObj(errorObj);
+            setErrorObj(error.response.data);
             setShowTab('errorTab');
         }
         setShowForm(false);
     }
 
     const closeNewBill = () => {
-        for (const key of Object.keys(newBill)) {
-            delete newBill[key]
-        }
-        for (const key of Object.keys(curUser)) {
-            delete curUser[key]
-        }
-        for (const key of Object.keys(curBill)) {
-            delete curBill[key]
-        }
         setNewBill({});
         setCurUser({});
         setCurBill({});
@@ -173,7 +143,7 @@ const Bills = () => {
         e.preventDefault();
 
         try {
-            const { bills, user } = await getLastBill(search);
+            const { bills, user } = await getBillsByUserID(search);
             for (const [key, value] of Object.entries(bills[0])) {
                 curBill[key] = value;
             }
@@ -270,7 +240,7 @@ const Bills = () => {
                             <ShowBill type={type} billObj={newBill} closeNewBill={closeNewBill} />
                         }
                         {showTab === 'errorTab' &&
-                            <ShowError errorObj={errorObj} closeNewBill={closeNewBill} />
+                            <ShowError type={'bill'} errorObj={errorObj} closeNewBill={closeNewBill} />
                         }
                     </div>
 

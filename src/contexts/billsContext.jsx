@@ -57,8 +57,8 @@ const BillsProvider = (props)=>{
         fetchBills(newUrl);
     }
 
-    const getLastBill = async (userID) => {
-        let newUrl = `${baseURL}/${userID}`;
+    const getBillsByUserID = async (userID) => {
+        let newUrl = `${baseURL}/user/${userID}`;
         console.log(newUrl)
         const res = await axios.get(newUrl, {
             headers: {
@@ -68,6 +68,17 @@ const BillsProvider = (props)=>{
         console.log(res.data);
         const { bills, user } = res.data;
         return { bills, user  };
+    }
+
+    const getBillByID = async (billNo) => {
+        let newUrl = `${baseURL}/${billNo}`;
+        console.log(newUrl)
+        const res = await axios.get(newUrl, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        return res;
     }
 
     const fetchBills = async(url) =>{
@@ -124,7 +135,7 @@ const BillsProvider = (props)=>{
 
 
     return (
-        <BillsContext.Provider value={{ bills, sendReq, fetchBills, createBill, updateBill, deleteBill, getLastBill, getBillPDF, filterObj, setFilterObj, clearFilters, loading }}>
+        <BillsContext.Provider value={{ bills, sendReq, fetchBills, createBill, updateBill, deleteBill, getBillByID, getBillsByUserID, getBillPDF, filterObj, setFilterObj, clearFilters, loading }}>
             {props.children}
         </BillsContext.Provider>
     )

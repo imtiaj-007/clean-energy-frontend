@@ -10,7 +10,7 @@ const PaymentProvider = (props) => {
     const [filterObj, setFilterObj] = useState({});
     const [loading, setLoading] = useState(false);
 
-    const getRecieptPDF = async(e)=> {
+    const getRecieptPDF = async (e) => {
         try {
             setLoading(true);
             const url = `${baseURL}/receipt/${e.target.dataset.paymentid}`
@@ -33,31 +33,31 @@ const PaymentProvider = (props) => {
         sendReq();
     }
 
-    const sendReq = ()=> {
-        let newUrl= `${baseURL}?`;
+    const sendReq = () => {
+        let newUrl = `${baseURL}?`;
         let sortArr = [];
 
         console.log(filterObj)
-        for(const [key, value] of Object.entries(filterObj)) {
-            if( key === 'date' || key === 'amount' || key === 'unit') {
+        for (const [key, value] of Object.entries(filterObj)) {
+            if (key === 'date' || key === 'amount' || key === 'unit') {
                 console.log(key, value)
                 sortArr.push(value);
             }
             else
                 newUrl = `${newUrl}${key}=${value}&`;
         }
-        if(newUrl.at(-1) === '&') {
+        if (newUrl.at(-1) === '&') {
             newUrl = newUrl.slice(0, -1);
         }
-        
-        if(sortArr.length > 0) var sort = `sort=${sortArr.join(",")}`;
-        if(sort) newUrl = `${newUrl}&${sort}`;
+
+        if (sortArr.length > 0) var sort = `sort=${sortArr.join(",")}`;
+        if (sort) newUrl = `${newUrl}&${sort}`;
 
         console.log(newUrl)
         fetchPayments(newUrl);
     }
 
-    const fetchPayments = async(url) => {
+    const fetchPayments = async (url) => {
         const res = await axios.get(url, {
             headers: {
                 "Content-Type": "application/json",
@@ -68,8 +68,8 @@ const PaymentProvider = (props) => {
         setPayments(res.data.payments);
     }
 
-    const createPayment = async(userID, billNo) => {
-        const res = await axios.post(baseURL, {userID, billNo}, {
+    const createPayment = async (userID, billNo) => {
+        const res = await axios.post(baseURL, { userID, billNo }, {
             headers: {
                 "Content-Type": "application/json",
                 "authToken": localStorage.getItem('authToken')
@@ -79,7 +79,7 @@ const PaymentProvider = (props) => {
         return res.data.payment;
     }
 
-    const fetchLastPayment = async(userID) => {
+    const fetchLastPayment = async (userID) => {
         const newUrl = `${baseURL}/${userID}`;
         console.log(newUrl);
         const res = await axios.get(newUrl, {
@@ -88,12 +88,14 @@ const PaymentProvider = (props) => {
                 "authToken": localStorage.getItem('authToken')
             }
         });
-        console.log(res.data.payment);
-        return res.data.payment;
+        console.log(res)
+        if(res.response) throw res.error;
+        else return res.data.payment;
+
     }
 
     useEffect(() => {
-        if(localStorage.getItem('authToken'))
+        if (localStorage.getItem('authToken'))
             sendReq();
     }, [filterObj])
 

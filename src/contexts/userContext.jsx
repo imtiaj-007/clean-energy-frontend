@@ -28,8 +28,7 @@ const UserProvider = (props)=>{
                 "authToken": localStorage.getItem('authToken')
             }
         });
-        console.log(res.data.users);
-        setUsers(res.data.users);
+        return res;
     }
 
     useEffect(()=> {
