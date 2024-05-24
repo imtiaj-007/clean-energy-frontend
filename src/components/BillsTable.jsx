@@ -5,10 +5,24 @@ import { useUserContext } from "../contexts/userContext";
 import BillsOptions from "./BillsOptions";
 import pdfIcon from '../assets/pdfIcon.svg'
 import Toast from "./Toast";
+import { useState } from "react";
 
 const BillsTable = () => {
-    const { bills, loading, getBillPDF } = useBillsContext();
+    const { bills, pdfLoading, getBillPDF } = useBillsContext();
     const { users } = useUserContext();
+    const [toast, setToast] = useState({ mode: 'Generating Bill', message: '', show: false });
+
+    const onClose = ()=> {
+        setToast({ show: false })
+    }
+
+    const getPDF = async (e)=> {
+        try {
+            await getBillPDF(e.target.dataset.billid);
+        } catch(err) {
+            setToast({mode: 'Error', message: 'We\'ll fix it soon ...', show: true})
+        }
+    }
 
     return (
         <section className="bills-container container ">
@@ -44,7 +58,7 @@ const BillsTable = () => {
                                         <td>{bill.amount}</td>
                                         <td>{bill.status}</td>
                                         <td>{curUser ? curUser.connectionType : "NA"}</td>
-                                        <td><img src={pdfIcon} alt="pdf-icon" data-paymentid={bill._id} onClick={getBillPDF}/></td>
+                                        <td><img src={pdfIcon} alt="pdf-icon" data-paymentid={bill._id} onClick={getPDF}/></td>
                                     </tr>
                                 )
                             })
@@ -53,7 +67,7 @@ const BillsTable = () => {
                     </tbody>
                 </table>
             </div>
-            {loading && <Toast mode={'Generating Bill'} />}
+            {(pdfLoading || toast.show) && <Toast mode={toast.mode} message={toast.message} onClose={onClose} />}
         </section>
     )
 }

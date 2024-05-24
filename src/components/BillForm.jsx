@@ -6,7 +6,7 @@ const BillForm = ({ dataObj }) => {
 
     return (
         <form className="row g-3 mt-2" onSubmit={handleFormSubmit} >
-            
+
             <div className="col-md-7 mt-1">
                 <label htmlFor="inputCustID" className="form-label col-form-label-sm m-0">Customer ID</label>
                 <input type="text" className="form-control form-control-sm" id="inputCustID" value={curUser._id} disabled={true} />
@@ -38,15 +38,22 @@ const BillForm = ({ dataObj }) => {
                     <label htmlFor="inputBillDate" className="form-label col-form-label-sm m-0">Bill Date</label>
                     <input type="text" className="form-control form-control-sm" id="inputBillDate" value={curBill.date} disabled={true} />
                 </div>
-            }
+            }            
 
-            {type !== 'Deleted' &&
-            <div className="col-md-3 mt-4">
+            <div className="col-md-5 mt-4">
                 <div className="input-group input-group-sm ">
-                    <label className="input-group-text " htmlFor="">Units</label>
-                    <input type="text" aria-label="First name" className="form-control" id="inputUnits" placeholder={type !== 'Created' ? curBill.units : 0} onChange={changeAmount} required />
+                    <label className="input-group-text " htmlFor="">Connection Type</label>
+                    <input type="text" aria-label="First name" className="form-control" id="inputConnecType" value={curUser.connectionType} disabled={true} />
                 </div>
             </div>
+
+            {type !== 'Deleted' &&
+                <div className="col-md-3 mt-4">
+                    <div className="input-group input-group-sm ">
+                        <label className="input-group-text " htmlFor="">Units</label>
+                        <input type="text" aria-label="First name" className="form-control" id="inputUnits" placeholder={type !== 'Created' ? curBill.units : 0} onChange={changeAmount} required />
+                    </div>
+                </div>
             }
 
             {type === 'Deleted' &&
@@ -57,16 +64,6 @@ const BillForm = ({ dataObj }) => {
                     </div>
                 </div>
             }
-
-            <div className="col-md-5 mt-4">
-                <div className="input-group input-group-sm ">
-                    <label className="input-group-text " htmlFor="payMethod">Method</label>
-                    <select className="form-select" name="payMethod" id="payMethod" disabled={type === 'Deleted'}  >
-                        <option value="online">Online</option>
-                        <option selected value="offline">Offline</option>
-                    </select>
-                </div>
-            </div>
 
             <div className="col-md-4 mt-4">
                 <div className="input-group input-group-sm ">

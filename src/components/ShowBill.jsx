@@ -1,10 +1,25 @@
 /* eslint-disable react/prop-types */
 
+import { useState } from "react";
 import { useBillsContext } from "../contexts/billsContext"
 import Toast from "./Toast";
 
 const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
-    const { loading, getBillPDF } = useBillsContext();
+    const { getBillPDF } = useBillsContext();
+    const [toast, setToast] = useState({ mode: '', message: '', show: false });
+
+    const hideToast = () => {
+        setToast(prevState => ({ ...prevState, show: false }));
+    };
+
+    const getPDF = async (e)=> {
+        try {
+            setToast({ mode: 'Generating Bill', message: '', show: true })
+            await getBillPDF(e.target.dataset.billid);
+        } catch(err) {
+            setToast({ mode: 'Error', message: 'We\'ll fix it soon ...', show: true })
+        }
+    }
 
     return (
         <div className="gen-bill-tab m-auto" id="genBill" >
@@ -70,11 +85,11 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                     </div>
                 </div>
                 <div className="card-footer d-flex justify-content-end ">
-                    <button className="btn btn-primary btn-sm mx-3 lable-width" data-paymentid={billObj._id} onClick={getBillPDF} disabled={type === 'Deleted'}>Print</button>
+                    <button className="btn btn-primary btn-sm mx-3 lable-width" data-billid={billObj._id} onClick={getPDF} disabled={type === 'Deleted'}>Print</button>
                     <button className="btn btn-primary btn-sm mx-3 lable-width" onClick={closeNewBill}>Close</button>
                 </div>
             </div>
-            {loading && <Toast mode={'Generating Bill'}/>}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
         </div>
     )
 }

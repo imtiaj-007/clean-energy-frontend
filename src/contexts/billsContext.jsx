@@ -9,20 +9,23 @@ const BillsProvider = (props)=>{
     const [bills, setBills] = useState([]);
     const [filterObj, setFilterObj] = useState({});
     const [loading, setLoading] = useState(false);
+    const [pdfLoading, setPdfLoading] = useState(false);
 
-    const getBillPDF = async(e)=> {
+    const getBillPDF = async(billNo)=> {
         try {
-            setLoading(true);
-            const url = `${baseURL}/createBill/${e.target.dataset.paymentid}`
+            setPdfLoading(true);
+            const url = `${baseURL}/createBill/${billNo}`
             const response = await axios.get(url, {
                 responseType: 'blob' // Set response type to 'blob' to receive binary data
             });
+            console.log(response)
             const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             window.open(fileURL, '_blank');
         } catch (error) {
-            console.error('Error downloading PDF:', error);
+            console.log(error)
+            setPdfLoading(false)
+            throw error;
         }
-        setLoading(false)
     }
 
     const clearFilters = () => {
@@ -58,6 +61,7 @@ const BillsProvider = (props)=>{
     }
 
     const getBillsByUserID = async (userID) => {
+        setLoading(true)
         let newUrl = `${baseURL}/user/${userID}`;
         console.log(newUrl)
         const res = await axios.get(newUrl, {
@@ -67,10 +71,11 @@ const BillsProvider = (props)=>{
         });
         console.log(res.data);
         const { bills, user } = res.data;
+        setLoading(false)
         return { bills, user  };
     }
 
-    const getBillByID = async (billNo) => {
+    const getBillByID = async (billNo) => {        
         let newUrl = `${baseURL}/${billNo}`;
         console.log(newUrl)
         const res = await axios.get(newUrl, {
@@ -82,6 +87,7 @@ const BillsProvider = (props)=>{
     }
 
     const fetchBills = async(url) =>{
+        setLoading(true)
         const res = await axios.get(url, {
             headers: {
                 "Content-Type": "application/json",
@@ -90,6 +96,7 @@ const BillsProvider = (props)=>{
         });
         console.log(res.data.bills);
         setBills(res.data.bills);
+        setLoading(false)
     }
 
     const createBill = async(billObj) => {
@@ -135,7 +142,7 @@ const BillsProvider = (props)=>{
 
 
     return (
-        <BillsContext.Provider value={{ bills, sendReq, fetchBills, createBill, updateBill, deleteBill, getBillByID, getBillsByUserID, getBillPDF, filterObj, setFilterObj, clearFilters, loading }}>
+        <BillsContext.Provider value={{ bills, sendReq, fetchBills, createBill, updateBill, deleteBill, getBillByID, getBillsByUserID, getBillPDF, filterObj, setFilterObj, clearFilters, loading, pdfLoading }}>
             {props.children}
         </BillsContext.Provider>
     )

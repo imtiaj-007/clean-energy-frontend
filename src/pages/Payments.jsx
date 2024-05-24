@@ -6,13 +6,14 @@ import { usePaymentContext } from "../contexts/paymentContext";
 import { useBillsContext } from "../contexts/billsContext";
 import PaymentsTable from "../components/PaymentsTable";
 import ViewAcknowledgement from "../components/ViewAcknowledgement";
+import ShowError from "../components/ShowError";
+import LoadingSpinner from "../components/LoadingSpinner";
+
 import payimg from '../assets/payment-img.svg'
-import spinner from '../assets/spinner.gif'
 import upi from '../assets/upi.svg'
 import paytm from '../assets/paytm.svg'
 import gpay from '../assets/google-pay.svg'
 import phonepe from '../assets/phone-pe.svg'
-import ShowError from "../components/ShowError";
 
 
 const Payments = () => {
@@ -147,12 +148,7 @@ return (
                 </div>
 
                 <div className="col-6 p-4 d-flex right-border">
-                    {loading &&
-                        <div className="m-auto">
-                            <img src={spinner} alt="loading" />
-                            <p>Processing, Please Wait...!</p>
-                        </div>
-                    }
+                    {loading && <LoadingSpinner />}
                     {!loading && showTab === 'viewPayment' &&
                         <div className="view-payment m-auto mw-75">
                             <h4>Payments Section</h4>

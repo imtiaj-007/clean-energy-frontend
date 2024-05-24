@@ -10,9 +10,10 @@ import FilterStatus from "./filterComponents/FilterStatus";
 
 import close from "../assets/close.svg"
 import filterClose from "../assets/filter-close.svg"
+import spinner from "../assets/spinner.gif"
 
 const BillsOptions = () => {
-    const { sendReq, filterObj, clearFilters } = useBillsContext();
+    const { sendReq, filterObj, clearFilters, loading } = useBillsContext();
     const [viewOption, setViewOption] = useState("Date");
     const [filterBoxVisible, setFilterBoxVisible] = useState(false);
 
@@ -42,12 +43,12 @@ const BillsOptions = () => {
 
     const submitFilters = () => {
         setFilterBoxVisible(false)
-        sendReq();
+        sendReq()
     }
 
     const searchCustomer = (e) => {
         e.preventDefault();
-        setFilterBoxVisible(false)
+        setFilterBoxVisible(false);
         sendReq();
         document.getElementById('searchForm').reset();
     }
@@ -67,6 +68,11 @@ const BillsOptions = () => {
                             })
                         }
                     </div>
+                    {loading &&
+                        <div className="loading-spinner ms-auto">
+                            <img src={spinner} alt="loading" width={38} />
+                        </div>
+                    }
                 </div>
 
                 <div className="col-4">

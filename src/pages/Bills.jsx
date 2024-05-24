@@ -1,13 +1,17 @@
-import BillsTable from '../components/BillsTable';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useUserContext } from '../contexts/userContext';
-import bulb from '../assets/bill-img.svg'
 import { useBillsContext } from '../contexts/billsContext';
+
+import BillsTable from '../components/BillsTable';
 import ShowBill from '../components/ShowBill';
 import BillForm from '../components/BillForm';
 import ShowError from '../components/ShowError';
 import Toast from '../components/Toast';
+import LoadingSpinner from '../components/LoadingSpinner';
+
+import bulb from '../assets/bill-img.svg'
+
 
 const Bills = () => {
     const { fetchUserByID } = useUserContext();
@@ -23,6 +27,7 @@ const Bills = () => {
     const [type, setType] = useState('');
     const [errorObj, setErrorObj] = useState({});
     const [toast, setToast] = useState({ mode: '', message: '', show: false });
+    const [loading, setLoading] = useState(false);
 
     const showToast = (mode, message) => {
         setToast({ mode, message, show: true });
@@ -56,10 +61,12 @@ const Bills = () => {
     }
 
     const findCustomer = async () => {
+        setLoading(true)
         try {
             const res = await fetchUserByID(search);
             setCurUser(res.data.user)
             handleformType();
+            setLoading(false)
             setShowForm(true);
         } catch (error) {
             setErrorObj(error.response.data);
@@ -68,6 +75,7 @@ const Bills = () => {
     }
 
     const findBill = async () => {
+        setLoading(true)
         try {
             const res1 = await getBillByID(search);
             const res2 = await fetchUserByID(res1.data.bill.userID);
@@ -83,6 +91,7 @@ const Bills = () => {
             setErrorObj(error.response.data);
             setShowTab('errorTab');
         }
+        setLoading(false)
     }
 
     const changeAmount = (e) => {
@@ -103,6 +112,7 @@ const Bills = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
         curUser.units = document.getElementById('inputUnits').value;
         let bill;
 
@@ -126,6 +136,7 @@ const Bills = () => {
             setErrorObj(error.response.data);
             setShowTab('errorTab');
         }
+        setLoading(false)
         setShowForm(false);
     }
 
@@ -141,6 +152,7 @@ const Bills = () => {
 
     const searchLastBill = async (e) => {
         e.preventDefault();
+        setLoading(true)
 
         try {
             const { bills, user } = await getBillsByUserID(search);
@@ -162,6 +174,7 @@ const Bills = () => {
             setErrorObj(errorObj);
             showToast('Error', error.response.data.message);
         }
+        setLoading(false)
     }
 
     return (
@@ -196,42 +209,45 @@ const Bills = () => {
                         }
                         {showTab === 'createBill' &&
                             <div className="create-bills m-auto mw-75 " >
-                                <h4>Create Bill</h4>
-                                {!showForm &&
+                                {!loading && <h4>Create Bill</h4>}
+                                {!loading && !showForm &&
                                     <div className="d-flex mt-2">
                                         <input className="form-control me-2" type="search" placeholder="Customer ID" aria-label="Search" required onChange={(e) => setSearch(e.target.value)} />
                                         <button className="btn btn-success" type="button" onClick={findCustomer}>Search</button>
                                     </div>
                                 }
-                                {showForm &&
+                                {loading && <LoadingSpinner />}
+                                {!loading && showForm &&
                                     <BillForm dataObj={getStatesObject()} />
                                 }
                             </div>
                         }
                         {showTab === 'updateBill' &&
                             <div className="update-bills m-auto mw-75 " >
-                                <h4>Update Bill</h4>
-                                {!showForm &&
+                                {!loading && <h4>Update Bill</h4>}
+                                {!loading && !showForm &&
                                     <div className="d-flex mt-2">
                                         <input className="form-control me-2" type="search" placeholder="Bill No" aria-label="Search" required onChange={(e) => setSearch(e.target.value)} />
                                         <button className="btn btn-success" type="button" onClick={findBill}>Search</button>
                                     </div>
                                 }
-                                {showForm &&
+                                {loading && <LoadingSpinner />}
+                                {!loading && showForm &&
                                     <BillForm dataObj={getStatesObject()} />
                                 }
                             </div>
                         }
                         {showTab === 'deleteBill' &&
                             <div className="delete-bills m-auto mw-75 " >
-                                <h4>Delete Bill</h4>
-                                {!showForm &&
+                                {!loading && <h4>Delete Bill</h4>}
+                                {!loading && !showForm &&
                                     <div className="d-flex mt-2">
                                         <input className="form-control me-2" type="search" placeholder="Bill No" aria-label="Search" required onChange={(e) => setSearch(e.target.value)} />
                                         <button className="btn btn-success" type="button" onClick={findBill}>Search</button>
                                     </div>
                                 }
-                                {showForm &&
+                                {loading && <LoadingSpinner />}
+                                {!loading && showForm &&
                                     <BillForm dataObj={getStatesObject()} />
                                 }
                             </div>
@@ -269,7 +285,8 @@ const Bills = () => {
                         </div>
 
                         <div className="col-7 pe-0">
-                            {showTab === 'lastBill' &&
+                            {loading && <LoadingSpinner />}
+                            {!loading && showTab === 'lastBill' &&
                                 <ShowBill type={type} billObj={curBill} userObj={curUser} closeNewBill={closeNewBill} />
                             }
                         </div>

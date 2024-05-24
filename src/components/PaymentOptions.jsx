@@ -7,12 +7,14 @@ import FilterStatus from "./filterComponents/FilterStatus";
 
 import close from "../assets/close.svg"
 import filterClose from "../assets/filter-close.svg"
+import spinner from "../assets/spinner.gif"
 
 
 const PaymentOptions = () => {
     const { sendReq, filterObj, clearFilters } = usePaymentContext();
     const [viewOption, setViewOption] = useState("Date");
     const [filterBoxVisible, setFilterBoxVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const showFilters = () => {
         setFilterBoxVisible(true)
@@ -39,8 +41,12 @@ const PaymentOptions = () => {
     }
 
     const submitFilters = () => {
+        setLoading(true)
         setFilterBoxVisible(false)
         sendReq();
+        setTimeout(() => {
+            setLoading(false)
+        }, 5000)
     }
 
     const searchCustomer = (e) => {
@@ -65,6 +71,11 @@ const PaymentOptions = () => {
                             })
                         }
                     </div>
+                    {loading &&
+                        <div className="loading-spinner ms-auto">
+                            <img src={spinner} alt="loading" width={38} />
+                        </div>
+                    }
                 </div>
 
                 <div className="col-4">

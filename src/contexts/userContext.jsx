@@ -32,8 +32,7 @@ const UserProvider = (props)=>{
     }
 
     useEffect(()=> {
-        if(localStorage.getItem('authToken'))
-            fetchUsers()
+        fetchUsers()
     }, [])
 
 

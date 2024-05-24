@@ -5,7 +5,7 @@ import avatar from '../assets/avatar.svg'
 const Navbar = () => {
     const navigate = useNavigate();
 
-    const handleLogout = ()=> {
+    const handleLogout = () => {
         localStorage.clear()
         navigate('/')
         window.location.reload()
@@ -27,11 +27,9 @@ const Navbar = () => {
                         <li className="nav-item mx-3">
                             <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
                         </li>
-                        {localStorage.getItem('isAdmin') === 'true' &&
-                            <li className="nav-item mx-3">
-                                <NavLink className="nav-link" to="/users">Users</NavLink>
-                            </li>
-                        }
+                        <li className="nav-item mx-3">
+                            <NavLink className="nav-link" to="/users">Users</NavLink>
+                        </li>
                         <li className="nav-item mx-3">
                             <NavLink className="nav-link" to="/bills">Bills</NavLink>
                         </li>
