@@ -8,11 +8,11 @@ import twitter from '../assets/twitter.svg'
 
 const Footer = () => {
     return (
-        <section className="container-fluid footer bg-dark p-5" data-bs-theme="dark">
-            <div className="container footer-container">
+        <section className="container-fluid footer bg-dark " data-bs-theme="dark">
+            <div className="container ">
                 <div className="row text-white">
 
-                    <div className="footer-about col-5">
+                    <div className="footer-about col-md-12 col-lg-5">
                         <figure>
                             <img className="brand-logo" src={logo} alt="logo" />
                         </figure>
@@ -36,9 +36,9 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    <div className="col-7 pt-3">
-                        <div className="row me-5">
-                            <div className="col-sm ">
+                    <div className="col-md-12 col-lg-7 pt-3">
+                        <div className="row me-5 footer-links">
+                            <div className="col-6 ">
                                 <div className="our-services d-flex ">
                                     <div className="m-auto">
                                         <h4>Our Services</h4>
@@ -51,7 +51,7 @@ const Footer = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm ">
+                            <div className="col-6 ">
                                 <div className="quick-access d-flex">
                                     <div className="m-auto">
                                         <h4>Quick Access</h4>

@@ -27,8 +27,7 @@ li {
 }
 
 .container-fluid {
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0 1rem;
 }
 
 .fonts {
@@ -134,6 +133,10 @@ figure {
 
 .social-icons img {
   margin: auto;
+}
+
+.footer {
+  padding: 3rem;
 }
 
 .footer-about {
@@ -257,7 +260,7 @@ th, td {
   position: absolute;
   top: 3.5rem;
   left: 1rem;
-  width: 80vh;
+  width: 40vw;
   background-color: rgb(255, 255, 255);
   border-radius: 0.5rem;
   /* border: solid black 1px; */
@@ -346,4 +349,55 @@ th, td {
   border: 3px solid rgba(251, 31, 31, 0.733);
   border-radius: 5rem;
   padding: 1rem;
+}
+
+
+@media (max-width: 1024px) {
+  :root {
+    font-size: 90%;
+  }
+
+  .right-border {
+    margin: 0;
+    border: none;
+  }
+
+  /* .bill-options-container {
+    flex-direction: column-reverse;
+  } */
+
+  .mt-md-3 {
+    margin-top: 1rem;
+  }
+
+  .filter-container {
+    width: 87vw;
+    top: 7rem;
+  }
+
+  .filter-date, .filter-status {
+    padding: 1.9rem 0;
+  }
+
+  .footer {
+    padding: 3rem 0.5rem;
+  }
+
+  .footer-container {
+    padding: 0;
+  }
+
+  .footer-about {
+    margin-bottom: 2rem;
+  }
+
+  .footer-links {
+    margin: 0 !important;
+    flex-direction: row;
+  }
+
+  .leagal-section p {
+    font-size: 90%;
+  }
+
 }

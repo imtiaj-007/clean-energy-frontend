@@ -27,8 +27,8 @@ const BillsTable = () => {
     return (
         <section className="bills-container container ">
             <BillsOptions />
-            <div className="table-container">
-                <table className="table table-striped ">
+            <div className="table-container table-responsive-lg ">
+                <table className="table table-striped text-center ">
                     <thead>
                         <tr className='table-dark'>
                             <th scope="col">Sl No</th>

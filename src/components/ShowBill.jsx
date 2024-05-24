@@ -61,21 +61,21 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                             </div>
                         }
 
-                        <div className="col-3 mt-4">
+                        <div className="col-md-12 col-lg-3 mt-4">
                             <div className="input-group input-group-sm ">
                                 <label className="input-group-text lable-width" htmlFor="viewUnits">Units</label>
                                 <input type="text" className="form-control" id="viewUnits" value={billObj.units} readOnly />
                             </div>
                         </div>
 
-                        <div className="col-4 mt-4">
+                        <div className="col-md-12 col-lg-4 mt-4">
                             <div className="input-group input-group-sm ">
                                 <label className="input-group-text lable-width" htmlFor="viewAmount">Amount</label>
                                 <input type="text" className="form-control" id="viewAmount" value={billObj.amount} readOnly />
                             </div>
                         </div>
 
-                        <div className="col-5 mt-4">
+                        <div className="col-md-12 col-lg-5 mt-4">
                             <div className="input-group input-group-sm ">
                                 <label className="input-group-text lable-width" htmlFor="viewDate">Date</label>
                                 <input type="text" className="form-control" id="viewDate" value={billObj.date} readOnly />
