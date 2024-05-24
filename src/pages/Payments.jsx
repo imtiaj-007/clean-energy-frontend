@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 
-
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { usePaymentContext } from "../contexts/paymentContext";
@@ -49,7 +48,7 @@ const findDueBills = async() => {
         const res = await getBillsByUserID(search);
         setCurUser(res.user);
         const arr = res.bills.filter((bill)=> {
-            bill.status === 'Due'
+            return bill.status === 'Due'
         });
 
         if (arr.length === 0) {
