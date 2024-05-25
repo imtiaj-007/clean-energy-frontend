@@ -2,14 +2,32 @@ import { usePaymentContext } from "../contexts/paymentContext"
 import pdfIcon from '../assets/pdfIcon.svg'
 import PaymentOptions from "./PaymentOptions";
 import Toast from "./Toast";
+import { useState } from "react";
 
 const PaymentsTable = () => {
-    const { loading, payments, getRecieptPDF } = usePaymentContext();
+    const { payments, getRecieptPDF } = usePaymentContext();
+    const [toast, setToast] = useState({ mode: 'Generating Bill', message: '', show: false });
+
+    const hideToast = ()=> {
+        setToast({ ...toast, show: false })
+    }
+    const openToast = ()=> {
+        setToast({ ...toast, show: true })
+    }
+
+    const getPDF = async (e)=> {
+        try {
+            openToast();
+            await getRecieptPDF(e.target.dataset.paymentid);
+        } catch(err) {
+            setToast({mode: 'Error', message: 'We\'ll fix it soon ...', show: true})
+        }
+    }
     
     return (
         <section className="payments-container container">
             <PaymentOptions />
-            <div className="table-container">
+            <div className="table-container table-responsive-lg">
                 <table className="table table-striped">
                     <thead>
                         <tr className='table-dark text-center '>
@@ -35,7 +53,7 @@ const PaymentsTable = () => {
                                         <td>{element.amount}</td>
                                         <td>{element.method}</td>
                                         <td>{element.createdAt.substring(0, 10)}</td>
-                                        <td><img src={pdfIcon} alt="pdf-icon" data-paymentid={element._id} onClick={getRecieptPDF}/></td>
+                                        <td><img src={pdfIcon} alt="pdf-icon" data-paymentid={element._id} onClick={getPDF}/></td>
                                     </tr>
                                 )
                             })
@@ -44,7 +62,7 @@ const PaymentsTable = () => {
                     </tbody>
                 </table>
             </div>
-            {loading && <Toast mode={'Generating Reciept'}/>}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
         </section>
     )
 }

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import { useState } from "react"
-import { isMobile } from "react-device-detect";
 import { useBillsContext } from "../contexts/billsContext";
 
 import FilterDate from "./filterComponents/FilterDate";
@@ -57,10 +56,10 @@ const BillsOptions = () => {
 
     return (
         <section className="table-options container mb-3">
-            <div className={`row ${isMobile ? 'flex-column flex-column-reverse gap-3' : '' }`}>
-                <div className="col-md-12 col-lg-8 bill-options gap-2">
+            <div className='row sm-col-rev '>
+                <div className="col-sm-12 col-md-6 col-lg-8 bill-options ">
                     <button className="btn btn-primary dropdown-toggle" type="button" onClick={showFilters} data-bs-toggle="dropdown" aria-expanded="false">Filters </button>
-                    <div className={`applied-filters ${isMobile ? 'd-none' : ''}`} id="appliedFilters">
+                    <div className='applied-filters' id="appliedFilters">
                         {
                             Object.keys(filterObj).map(key => {
                                 return (
@@ -76,7 +75,7 @@ const BillsOptions = () => {
                     }
                 </div>
 
-                <div className="col-md-12 col-lg-4">
+                <div className="col-sm-12 col-md-6 col-lg-4">
                     <form id="searchForm" className="d-flex" role="search" >
                         <input className="form-control me-2" type="search" placeholder="Customer ID / Email" aria-label="Search" disabled={localStorage.getItem('isAdmin') === 'false'} required onChange={(e) => filterObj.searchID = e.target.value} />
                         <button className="btn btn-success" type="submit" disabled={localStorage.getItem('isAdmin') === 'false'} onClick={searchCustomer}>Search</button>

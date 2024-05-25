@@ -8,7 +8,7 @@ const UserTable = () => {
     return (
         <section className="user-container container">
             <h2 className='text-center mb-4'>Users Table</h2>
-            <div className="table-container">
+            <div className="table-container table-responsive ">
                 <table className="table table-striped">
                     <thead>
                         <tr className='table-dark'>

@@ -8,7 +8,7 @@ import geothermal from '../assets/geoThermal.png'
 const Services = () => {
     return (
         <section className="services container-fluid my-5">
-            <div className="container text-center p-5">
+            <div className="container text-center p-md-0 p-lg-5">
                 <h2 className="mb-5">Our Services</h2>
                 <div className="service-cards row g-5">
                     <div className="col-sm-12 col-md-6 col-lg-3">

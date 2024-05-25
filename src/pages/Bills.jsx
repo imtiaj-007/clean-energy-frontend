@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { isMobile } from 'react-device-detect';
 import { useUserContext } from '../contexts/userContext';
 import { useBillsContext } from '../contexts/billsContext';
 
@@ -181,8 +180,8 @@ const Bills = () => {
     return (
         <section className='container-fluid bills-page'>
             <div className="container outer-border my-4">
-                <div className={`row bill-options-container`}>
-                    <div className={`col-sm-12 col-md-6 col-lg-3 d-flex right-border mt-md-3 mb-mb-3 mt-lg-0 mb-lg-0`}>
+                <div className='row bill-options-container'>
+                    <div className='col-sm-12 col-md-4 col-lg-3 radio-options right-border '>
                         <div className="radio-container m-auto">
                             <input type="radio" className="btn-check" name="bill-radio-options" id="viewBill" autoComplete="off" checked={showTab === 'viewBill' || type === 'Fetched'} onChange={(e) => setShowTab(e.target.id)} />
                             <label className="btn btn-outline-primary " htmlFor="viewBill">View Bill</label>
@@ -198,7 +197,7 @@ const Bills = () => {
                         </div>
                     </div>
 
-                    <div className={`col-sm-12 col-md-6 col-lg-6 p-4 d-flex right-border`}>
+                    <div className='col-sm-12 col-md-8 col-lg-6 p-4 d-flex right-border '>
                         {(showTab === 'viewBill' || type === 'Fetched') &&
                             <div className="view-bills m-auto mw-75 " >
                                 <h4>Bills Section</h4>
@@ -261,7 +260,7 @@ const Bills = () => {
                         }
                     </div>
 
-                    <div className={`col-3 ${isMobile ? 'd-none' : ''} d-flex`}>
+                    <div className='col-lg-3 section-img'>
                         <img className="common-img m-auto" src={bulb} alt="bulb" />
                     </div>
 

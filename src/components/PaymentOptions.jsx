@@ -11,10 +11,9 @@ import spinner from "../assets/spinner.gif"
 
 
 const PaymentOptions = () => {
-    const { sendReq, filterObj, clearFilters } = usePaymentContext();
+    const { sendReq, filterObj, clearFilters, loading } = usePaymentContext();
     const [viewOption, setViewOption] = useState("Date");
     const [filterBoxVisible, setFilterBoxVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const showFilters = () => {
         setFilterBoxVisible(true)
@@ -41,12 +40,8 @@ const PaymentOptions = () => {
     }
 
     const submitFilters = () => {
-        setLoading(true)
         setFilterBoxVisible(false)
         sendReq();
-        setTimeout(() => {
-            setLoading(false)
-        }, 5000)
     }
 
     const searchCustomer = (e) => {
@@ -59,8 +54,8 @@ const PaymentOptions = () => {
 
     return (
         <section className="table-options container mb-3">
-            <div className="row">
-                <div className="col-8 bill-options gap-2">
+            <div className="row sm-col-rev ">
+                <div className="col-sm-12 col-md-6 col-lg-8 bill-options ">
                     <button className="btn btn-primary dropdown-toggle" type="button" onClick={showFilters} data-bs-toggle="dropdown" aria-expanded="false">Filters </button>
                     <div className="applied-filters" id="appliedFilters">
                         {
@@ -78,7 +73,7 @@ const PaymentOptions = () => {
                     }
                 </div>
 
-                <div className="col-4">
+                <div className="col-sm-12 col-md-6 col-lg-4 ">
                     <form id="searchForm" className="d-flex" role="search" >
                         <input className="form-control me-2" type="search" placeholder="Customer ID / Email" aria-label="Search" disabled={localStorage.getItem('isAdmin') === 'false'} required onChange={(e) => filterObj.searchID = e.target.value} />
                         <button className="btn btn-success" type="submit" disabled={localStorage.getItem('isAdmin') === 'false'} onClick={searchCustomer}>Search</button>

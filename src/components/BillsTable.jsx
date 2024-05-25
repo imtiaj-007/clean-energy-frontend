@@ -13,7 +13,7 @@ const BillsTable = () => {
     const [toast, setToast] = useState({ mode: 'Generating Bill', message: '', show: false });
 
     const onClose = ()=> {
-        setToast({ show: false })
+        setToast({ ...toast, show: false })
     }
 
     const getPDF = async (e)=> {
@@ -27,7 +27,7 @@ const BillsTable = () => {
     return (
         <section className="bills-container container ">
             <BillsOptions />
-            <div className="table-container table-responsive-lg ">
+            <div className="table-container table-responsive ">
                 <table className="table table-striped text-center ">
                     <thead>
                         <tr className='table-dark'>

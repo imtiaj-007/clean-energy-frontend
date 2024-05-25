@@ -3,9 +3,9 @@ import home from '../assets/home-stock-img.jpg'
 const Main = () => {
     return (
         <section className="home container-fluid my-5">
-            <div className="container p-5">
+            <div className="container p-md-0 p-lg-5">
                 <div className="row justify-content-center ">
-                    <div className="col-12-md col-6 d-flex">
+                    <div className="col-md-12 col-lg-6 d-flex">
                         <div className="m-auto main-content">
                             <h1>Clean Energy</h1>
                             <h6>Say no to Fossil Fuels</h6>
@@ -18,8 +18,8 @@ const Main = () => {
                         </div>
                         
                     </div>
-                    <div className="col-12-md col-6">
-                        <div className="d-flex justify-content-end ">
+                    <div className="col-md-12 col-lg-6">
+                        <div className="home-img-container ">
                             <img src={home} alt="home-img" className='home-img' />
                         </div>
                     </div>

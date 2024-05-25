@@ -9,11 +9,12 @@ const PaymentProvider = (props) => {
     const [payments, setPayments] = useState([]);
     const [filterObj, setFilterObj] = useState({});
     const [loading, setLoading] = useState(false);
+    const [pdfLoading, setPdfLoading] = useState(false);
 
-    const getRecieptPDF = async (e) => {
+    const getRecieptPDF = async (paymentID) => {
         try {
-            setLoading(true);
-            const url = `${baseURL}/receipt/${e.target.dataset.paymentid}`
+            setPdfLoading(true);
+            const url = `${baseURL}/receipt/${paymentID}`
             const response = await axios.get(url, {
                 responseType: 'blob' // Set response type to 'blob' to receive binary data
             });
@@ -21,8 +22,9 @@ const PaymentProvider = (props) => {
             window.open(fileURL, '_blank');
         } catch (error) {
             console.error('Error downloading PDF:', error);
+            throw error;
         }
-        setLoading(false)
+        setPdfLoading(false)
     }
 
     const clearFilters = () => {
@@ -58,6 +60,7 @@ const PaymentProvider = (props) => {
     }
 
     const fetchPayments = async (url) => {
+        setLoading(true)
         const res = await axios.get(url, {
             headers: {
                 "Content-Type": "application/json",
@@ -66,6 +69,7 @@ const PaymentProvider = (props) => {
         });
         console.log(res.data.payments);
         setPayments(res.data.payments);
+        setLoading(false);
     }
 
     const createPayment = async (userID, billNo) => {
@@ -100,7 +104,7 @@ const PaymentProvider = (props) => {
     }, [filterObj])
 
     return (
-        <paymentContext.Provider value={{ payments, fetchPayments, createPayment, fetchLastPayment, getRecieptPDF, filterObj, sendReq, clearFilters, loading }}>
+        <paymentContext.Provider value={{ payments, fetchPayments, createPayment, fetchLastPayment, getRecieptPDF, filterObj, sendReq, clearFilters, loading, pdfLoading }}>
             {props.children}
         </paymentContext.Provider>
     )
