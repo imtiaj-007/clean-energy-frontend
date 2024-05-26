@@ -1,31 +1,44 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
+import { pdf } from '@react-pdf/renderer'
 import { createContext, useContext, useEffect, useState } from "react";
+import BillPDF from "../components/BillPDF";
 
 const BillsContext = createContext();
 
-const BillsProvider = (props)=>{
+const BillsProvider = (props) => {
     const baseURL = import.meta.env.VITE_BILL_BASE_URL;
     const [bills, setBills] = useState([]);
     const [filterObj, setFilterObj] = useState({});
     const [loading, setLoading] = useState(false);
     const [pdfLoading, setPdfLoading] = useState(false);
 
-    const getBillPDF = async(billNo)=> {
+    const generatePDF = async (bill, user) => {
+        const blob = await pdf(<BillPDF bill={bill} user={user} />).toBlob();
+        return blob;
+    }
+
+    const getBillPDF = async (billNo) => {
         try {
             setPdfLoading(true);
-            const url = `${baseURL}/createBill/${billNo}`
+            const url = `${baseURL}/createBill/${billNo}`;
+
             const response = await axios.get(url, {
-                responseType: 'blob' // Set response type to 'blob' to receive binary data
+                headers: {
+                    "Accept": 'application/json',
+                    "Content-Type": 'application/json'
+                }
             });
-            console.log(response)
-            const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+
+            const data = await generatePDF(response.data.bill, response.data.user);
+            const fileURL = URL.createObjectURL(new Blob([data], { type: 'application/pdf' }));
             window.open(fileURL, '_blank');
+            
         } catch (error) {
             console.log(error)
-            setPdfLoading(false)
             throw error;
         }
+        setPdfLoading(false)
     }
 
     const clearFilters = () => {
@@ -36,25 +49,25 @@ const BillsProvider = (props)=>{
         sendReq();
     }
 
-    const sendReq = ()=> {
-        let newUrl= `${baseURL}?`;
+    const sendReq = () => {
+        let newUrl = `${baseURL}?`;
         let sortArr = [];
 
         console.log(filterObj)
-        for(const [key, value] of Object.entries(filterObj)) {
-            if( key === 'date' || key === 'amount' || key === 'unit') {
+        for (const [key, value] of Object.entries(filterObj)) {
+            if (key === 'date' || key === 'amount' || key === 'unit') {
                 console.log(key, value)
                 sortArr.push(value);
             }
             else
                 newUrl = `${newUrl}${key}=${value}&`;
         }
-        if(newUrl.at(-1) === '&') {
+        if (newUrl.at(-1) === '&') {
             newUrl = newUrl.slice(0, -1);
         }
-        
-        if(sortArr.length > 0) var sort = `sort=${sortArr.join(",")}`;
-        if(sort) newUrl = `${newUrl}&${sort}`;
+
+        if (sortArr.length > 0) var sort = `sort=${sortArr.join(",")}`;
+        if (sort) newUrl = `${newUrl}&${sort}`;
 
         console.log(newUrl)
         fetchBills(newUrl);
@@ -72,10 +85,10 @@ const BillsProvider = (props)=>{
         console.log(res.data);
         const { bills, user } = res.data;
         setLoading(false)
-        return { bills, user  };
+        return { bills, user };
     }
 
-    const getBillByID = async (billNo) => {        
+    const getBillByID = async (billNo) => {
         let newUrl = `${baseURL}/${billNo}`;
         console.log(newUrl)
         const res = await axios.get(newUrl, {
@@ -86,7 +99,7 @@ const BillsProvider = (props)=>{
         return res;
     }
 
-    const fetchBills = async(url) =>{
+    const fetchBills = async (url) => {
         setLoading(true)
         const res = await axios.get(url, {
             headers: {
@@ -99,7 +112,7 @@ const BillsProvider = (props)=>{
         setLoading(false)
     }
 
-    const createBill = async(billObj) => {
+    const createBill = async (billObj) => {
         let newUrl = `${baseURL}/createBill`;
         const res = await axios.post(newUrl, billObj, {
             headers: {
@@ -110,7 +123,7 @@ const BillsProvider = (props)=>{
         return res.data.newBill;
     }
 
-    const updateBill = async(billObj) => {
+    const updateBill = async (billObj) => {
         let newUrl = `${baseURL}/createBill`;
         console.log(billObj)
         const res = await axios.patch(newUrl, billObj, {
@@ -122,7 +135,7 @@ const BillsProvider = (props)=>{
         return res.data.newBill;
     }
 
-    const deleteBill = async(billObj) => {
+    const deleteBill = async (billObj) => {
         let newUrl = `${baseURL}/createBill`;
         console.log(billObj)
         const res = await axios.delete(newUrl, {
@@ -135,8 +148,8 @@ const BillsProvider = (props)=>{
         return res.data.newBill;
     }
 
-    useEffect(()=> {
-        if(localStorage.getItem('authToken'))
+    useEffect(() => {
+        if (localStorage.getItem('authToken'))
             sendReq()
     }, [filterObj])
 
@@ -152,4 +165,4 @@ const useBillsContext = () => {
     return useContext(BillsContext);
 }
 
-export {BillsProvider, useBillsContext};
+export { BillsProvider, useBillsContext };

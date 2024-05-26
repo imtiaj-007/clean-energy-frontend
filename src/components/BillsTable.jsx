@@ -58,7 +58,7 @@ const BillsTable = () => {
                                         <td>{bill.amount}</td>
                                         <td>{bill.status}</td>
                                         <td>{curUser ? curUser.connectionType : "NA"}</td>
-                                        <td><img src={pdfIcon} alt="pdf-icon" data-paymentid={bill._id} onClick={getPDF}/></td>
+                                        <td><img src={pdfIcon} alt="pdf-icon" data-billid={bill._id} onClick={getPDF}/></td>
                                     </tr>
                                 )
                             })
