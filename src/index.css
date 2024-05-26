@@ -530,6 +530,10 @@ legend {
     object-fit: contain;
   }
 
+  .projects a, #contactForm {
+    width: 23.5rem !important;
+  }
+
 }
 
 @media (max-width: 576px) {
