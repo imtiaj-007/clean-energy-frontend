@@ -18,7 +18,7 @@ const Toast = ({ mode, message, onClose }) => {
         <div className="toast-container position-fixed top-0 end-0 p-3">
             <div className="toast show bg-light" role="alert" aria-live="assertive" aria-atomic="true">
                 <div className="toast-header">
-                    {mode === 'Tips' && <img src={tips} alt="tips" width="30rem" />}
+                    {(mode === 'Tips' || mode === 'Success') && <img src={tips} alt="tips" width="30rem" />}
                     {mode === 'Error' && <img src={error} alt="error" width="28rem" />}
                     {(mode === 'Loading' || mode === 'Generating Bill' || mode === 'Generating Reciept') && (
                         <div className="spinner-border text-primary" role="status">
@@ -29,7 +29,7 @@ const Toast = ({ mode, message, onClose }) => {
                     <button type="button" className="btn-close ms-auto" aria-label="Close" onClick={onClose}></button>
                 </div>
                 <div className="toast-body">
-                    {mode === 'Error' ? message : 'Processing your request...'}
+                    {(mode === 'Error' || mode === 'Success') ? message : 'Processing your request...'}
                 </div>
             </div>
         </div>
