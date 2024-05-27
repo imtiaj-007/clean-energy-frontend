@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-// import { pdf } from '@react-pdf/renderer'
-// import BillPDF from "../components/BillPDF";
 
 const BillsContext = createContext();
 
@@ -13,31 +11,22 @@ const BillsProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [pdfLoading, setPdfLoading] = useState(false);
 
-    // const generatePDF = async (bill, user) => {
-    //     const blob = await pdf(<BillPDF bill={bill} user={user} />).toBlob();
-    //     return blob;
-    // }
-
     const getBillPDF = async (billNo) => {
         try {
             setPdfLoading(true);
             const url = `${baseURL}/createBill/${billNo}`;
-
             const response = await axios.get(url, {
-                responseType: 'blob'
+                headers: {
+                    "Content-Type": 'application/json'
+                }
             })
-            console.log(response.data)
+            console.log(response)
+            window.open(response.data.pdfLink, '_blank');
 
-            // const response = await axios.get(url, {
-            //     headers: {
-            //         "Accept": 'application/json',
-            //         "Content-Type": 'application/json'
-            //     }
-            // });
-
-            // const data = await generatePDF(response.data.bill, response.data.user);
-            const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-            window.open(fileURL, '_blank');
+            // const pdf = new Blob([response.data], { type: 'application/pdf' });    
+            // console.log(pdf)        
+            // const fileURL = URL.createObjectURL(pdf);
+            // window.open(fileURL, '_blank');
             
         } catch (error) {
             console.log(error)

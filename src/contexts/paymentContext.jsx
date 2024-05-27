@@ -16,10 +16,18 @@ const PaymentProvider = (props) => {
             setPdfLoading(true);
             const url = `${baseURL}/receipt/${paymentID}`
             const response = await axios.get(url, {
-                responseType: 'blob' // Set response type to 'blob' to receive binary data
-            });
-            const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-            window.open(fileURL, '_blank');
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            })
+            console.log(response)
+            window.open(response.data.pdfLink, '_blank');
+
+            // const response = await axios.get(url, {
+            //     responseType: 'blob' // Set response type to 'blob' to receive binary data
+            // });
+            // const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            // window.open(fileURL, '_blank');
         } catch (error) {
             console.error('Error downloading PDF:', error);
             throw error;
