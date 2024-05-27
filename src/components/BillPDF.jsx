@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from 'react';
+
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 

@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
-import { pdf } from '@react-pdf/renderer'
 import { createContext, useContext, useEffect, useState } from "react";
-import BillPDF from "../components/BillPDF";
+// import { pdf } from '@react-pdf/renderer'
+// import BillPDF from "../components/BillPDF";
 
 const BillsContext = createContext();
 
@@ -13,10 +13,10 @@ const BillsProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [pdfLoading, setPdfLoading] = useState(false);
 
-    const generatePDF = async (bill, user) => {
-        const blob = await pdf(<BillPDF bill={bill} user={user} />).toBlob();
-        return blob;
-    }
+    // const generatePDF = async (bill, user) => {
+    //     const blob = await pdf(<BillPDF bill={bill} user={user} />).toBlob();
+    //     return blob;
+    // }
 
     const getBillPDF = async (billNo) => {
         try {
@@ -24,14 +24,19 @@ const BillsProvider = (props) => {
             const url = `${baseURL}/createBill/${billNo}`;
 
             const response = await axios.get(url, {
-                headers: {
-                    "Accept": 'application/json',
-                    "Content-Type": 'application/json'
-                }
-            });
+                responseType: 'blob'
+            })
+            console.log(response.data)
 
-            const data = await generatePDF(response.data.bill, response.data.user);
-            const fileURL = URL.createObjectURL(new Blob([data], { type: 'application/pdf' }));
+            // const response = await axios.get(url, {
+            //     headers: {
+            //         "Accept": 'application/json',
+            //         "Content-Type": 'application/json'
+            //     }
+            // });
+
+            // const data = await generatePDF(response.data.bill, response.data.user);
+            const fileURL = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
             window.open(fileURL, '_blank');
             
         } catch (error) {
