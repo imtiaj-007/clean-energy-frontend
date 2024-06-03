@@ -518,6 +518,26 @@ legend {
     font-size: 90%;
   }
 
+  .login-page {
+    width: 100%;
+    height: 50vh;
+  }
+
+  .main-container {
+    width: 100%;
+    height: 40vh;
+  }
+
+  .img-section, .form-section {
+    height: 100%;
+  }
+
+  .form-container {
+    padding: 3rem 1rem;
+    width: 100%;
+    height: auto;
+  }
+
 }
 
 @media (max-width: 768px) {
@@ -531,14 +551,38 @@ legend {
   }
 
   .projects a, #contactForm {
-    width: 22rem !important;
+    width: 23.5rem !important;
   }
 
+  .payment-icons {
+    max-height: 2rem;
+  }
 }
 
 @media (max-width: 576px) {
   .sm-col-rev {
     flex-direction: column-reverse;
     gap: 1rem;
+  }
+
+  .main-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .login-page {
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+  }
+
+  .img-section, .form-section {
+    height: 100%;
+  }
+
+  .form-container {
+    padding: 3rem 0;
+    width: 100%;
+    height: auto;
   }
 }

@@ -81,10 +81,10 @@ const LoginPage = () => {
         <section className="container-fluid login-page mt-5">
             <div className="container d-flex">
                 <div className="main-container row m-auto shadow">
-                    <div className="img-section col-md-12 col-lg-6 d-flex">
+                    <div className="img-section col-sm-12 col-md-6 d-flex">
                         <img src={loginImg} alt="login" />
                     </div>
-                    <div className="form-section col-md-12 col-lg-6">
+                    <div className="form-section col-sm-12 col-md-6">
                         <div className="form-container">
                             <div className="form-heading mb-4">
 

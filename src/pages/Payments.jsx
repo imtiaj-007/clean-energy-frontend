@@ -151,7 +151,7 @@ const Payments = () => {
                             </div>
                         }
                         {!loading && showTab === 'payBill' && !localStorage.getItem('authToken') &&
-                            <div className="m-auto mw-75 " >
+                            <div className="m-auto w-100 " >
                                 <div className="text-center p-3 ">
                                     <div className="payment-border mb-3">
                                         <p>Please Login to pay your Bill</p>

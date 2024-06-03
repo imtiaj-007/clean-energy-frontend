@@ -259,7 +259,7 @@ const Bills = () => {
                 <div className="container p-0">
                     <div className="row m-auto my-4">
 
-                        <div className="col-5 p-0">
+                        <div className="col-md-12 col-lg-5 p-0">
                             <div className="outer-border p-5" style={{ height: "17rem" }}>
                                 <button className="btn btn-outline-dark btn-sm ">Generate Latest Bill </button>
                                 <div className="d-flex mt-2 mb-4">
@@ -273,7 +273,7 @@ const Bills = () => {
                             </div>
                         </div>
 
-                        <div className="col-7 pe-0">
+                        <div className="col-md-12 col-lg-7 mt-md-3 p-md-0 pe-lg-0">
                             {loading && <LoadingSpinner />}
                             {!loading && showTab === 'lastBill' &&
                                 <ShowBill type={type} billObj={curBill} userObj={curUser} closeNewBill={closeNewBill} />
