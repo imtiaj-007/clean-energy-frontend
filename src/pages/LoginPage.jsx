@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import loginImg from '../assets/login.jpg'
@@ -11,7 +11,7 @@ const LoginPage = () => {
     const Navigate = useNavigate()
     const [userDetails, setUserDetails] = useState({})
     const [showLoginForm, setshowLoginForm] = useState(true)
-    const [toast, setToast] = useState({ mode: '', message: '', show: false });
+    const [toast, setToast] = useState({ mode: '', message: '', show: true });
 
     const showToast = (mode, message) => {
         setToast({ mode, message, show: true });
@@ -19,6 +19,10 @@ const LoginPage = () => {
             setToast(prevState => ({ ...prevState, show: false }));
         }, 5000);
     };
+
+    useEffect(()=> {
+        showToast('Tips', 'Use the given credentials to Login as Admin, and try all functionalities.')
+    }, [])
 
     
     const toogleLogin = (e) => {
@@ -32,6 +36,7 @@ const LoginPage = () => {
         console.log(userDetails)
 
         try {
+            showToast('Loading', '');
             const res = await axios.post(`${baseURL}/login`, userDetails, {
                 headers: {
                     "Content-Type": 'application/json'
@@ -47,9 +52,11 @@ const LoginPage = () => {
                     Navigate('/users')
                 window.location.reload()
             }
+            setToast(prevState => ({ ...prevState, show: false }));
         } catch (error) {
+            setToast(prevState => ({ ...prevState, show: false }));
             let message = error.response.data.message;
-            showToast(toast.mode, message);
+            showToast('Error', message);
         }
     }
 
@@ -58,6 +65,7 @@ const LoginPage = () => {
         console.log(userDetails)
             
         try {
+            showToast('Loading', '');
             const res = await axios.post(`${baseURL}/signup`, userDetails, {
                 headers: {
                     "Content-Type": 'application/json'
@@ -71,9 +79,11 @@ const LoginPage = () => {
                 Navigate('/users')
                 window.location.reload()
             }
+            setToast(prevState => ({ ...prevState, show: false }));
         } catch (error) {
+            setToast(prevState => ({ ...prevState, show: false }));
             let message = error.response.data.message;
-            showToast(toast.mode, message);
+            showToast('Error', message);
         }
     }
 

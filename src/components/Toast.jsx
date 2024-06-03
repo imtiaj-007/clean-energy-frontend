@@ -33,7 +33,7 @@ const Toast = ({ mode, message }) => {
                     <button type="button" className="btn-close ms-auto" aria-label="Close" onClick={hideToast}></button>
                 </div>
                 <div className="toast-body">
-                    {(mode === 'Error' || mode === 'Success') ? message : 'Processing your request...'}
+                    {(mode === 'Error' || mode === 'Success' || mode === 'Tips') ? message : 'Processing your request...'}
                 </div>
             </div>
         </div>
