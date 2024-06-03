@@ -4,14 +4,11 @@ import Services from '../components/Services'
 
 const Home = () => {
     return (
-        <>
         <section className="container-fluid">
             <Main />
             <About />
             <Services />
-        </section>
-        
-        </>
+        </section>        
     )
 }
 

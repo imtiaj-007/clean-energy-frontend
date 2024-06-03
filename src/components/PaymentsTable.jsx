@@ -6,20 +6,22 @@ import { useState } from "react";
 
 const PaymentsTable = () => {
     const { payments, getRecieptPDF } = usePaymentContext();
-    const [toast, setToast] = useState({ mode: 'Generating Bill', message: '', show: false });
+    const [toast, setToast] = useState({ mode: '', message: '', show: false });
 
-    const hideToast = ()=> {
-        setToast({ ...toast, show: false })
-    }
-    const openToast = ()=> {
-        setToast({ ...toast, show: true })
-    }
+    const showToast = (mode, message) => {
+        setToast({ mode, message, show: true });
+        setTimeout(()=> {
+            setToast(prevState => ({ ...prevState, show: false }));
+        }, 5000);
+    };
 
     const getPDF = async (e)=> {
         try {
-            openToast();
+            showToast('Generating Reciept', '');
             await getRecieptPDF(e.target.dataset.paymentid);
+            setToast(prevState => ({ ...prevState, show: false }));
         } catch(err) {
+            setToast(prevState => ({ ...prevState, show: false }));
             setToast({mode: 'Error', message: 'We\'ll fix it soon ...', show: true})
         }
     }
@@ -62,7 +64,7 @@ const PaymentsTable = () => {
                     </tbody>
                 </table>
             </div>
-            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} />}
         </section>
     )
 }

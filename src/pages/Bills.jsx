@@ -26,15 +26,14 @@ const Bills = () => {
     const [newBill, setNewBill] = useState({});
     const [type, setType] = useState('');
     const [errorObj, setErrorObj] = useState({});
-    const [toast, setToast] = useState({ mode: '', message: '', show: false });
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState({ mode: '', message: '', show: false });
 
     const showToast = (mode, message) => {
         setToast({ mode, message, show: true });
-    };
-
-    const hideToast = () => {
-        setToast(prevState => ({ ...prevState, show: false }));
+        setTimeout(() => {
+            setToast(prevState => ({ ...prevState, show: false }));
+        }, 5000);
     };
 
     const getStatesObject = () => {
@@ -156,22 +155,12 @@ const Bills = () => {
 
         try {
             const { bills, user } = await getBillsByUserID(search);
-            for (const [key, value] of Object.entries(bills[0])) {
-                curBill[key] = value;
-            }
-            for (const [key, value] of Object.entries(user)) {
-                curUser[key] = value;
-            }
-            setCurBill(curBill);
-            setCurUser(curUser);
+            setCurBill(bills[0]);
+            setCurUser(user);
             setType('Fetched');
             setShowTab('lastBill');
         } catch (error) {
             console.log(error)
-            for (const [key, value] of Object.entries(error.response.data)) {
-                errorObj[key] = value;
-            }
-            setErrorObj(errorObj);
             showToast('Error', error.response.data.message);
         }
         setLoading(false)
@@ -184,7 +173,7 @@ const Bills = () => {
                     <div className='col-sm-12 col-md-4 col-xl-3 radio-options right-border '>
                         <div className="radio-container m-auto">
                             <input type="radio" className="btn-check" name="bill-radio-options" id="viewBill" autoComplete="off" checked={showTab === 'viewBill' || type === 'Fetched'} onChange={(e) => setShowTab(e.target.id)} />
-                            <label className="btn btn-outline-primary " htmlFor="viewBill">View Bill</label>
+                            <label className="btn btn-outline-primary " htmlFor="viewBill" >View Bill</label>
 
                             <input type="radio" className="btn-check" name="bill-radio-options" id="createBill" autoComplete="off" checked={showTab === 'createBill' || type === 'Created'} disabled={!localStorage.getItem('authToken') || localStorage.getItem('isAdmin') === "false"} onChange={(e) => setShowTab(e.target.id)} />
                             <label className="btn btn-outline-primary " htmlFor="createBill">Create Bill</label>
@@ -295,7 +284,7 @@ const Bills = () => {
                 </div>
             }
             {localStorage.getItem('authToken') && <BillsTable />}
-            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} />}
         </section>
     )
 }

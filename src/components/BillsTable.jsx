@@ -8,19 +8,25 @@ import Toast from "./Toast";
 import { useState } from "react";
 
 const BillsTable = () => {
-    const { bills, pdfLoading, getBillPDF } = useBillsContext();
+    const { bills, getBillPDF } = useBillsContext();
     const { users } = useUserContext();
-    const [toast, setToast] = useState({ mode: 'Generating Bill', message: '', show: false });
+    const [toast, setToast] = useState({ mode: '', message: '', show: false });
 
-    const onClose = ()=> {
-        setToast({ ...toast, show: false })
-    }
+    const showToast = (mode, message) => {
+        setToast({ mode, message, show: true });
+        setTimeout(()=> {
+            setToast(prevState => ({ ...prevState, show: false }));
+        }, 5000);
+    };
 
     const getPDF = async (e)=> {
         try {
+            showToast('Generating Bill', '')
             await getBillPDF(e.target.dataset.billid);
+            setToast(prevState => ({ ...prevState, show: false }));
         } catch(err) {
-            setToast({mode: 'Error', message: 'We\'ll fix it soon ...', show: true})
+            setToast(prevState => ({ ...prevState, show: false }));
+            showToast('Error', 'We\'ll fix it soon ...')
         }
     }
 
@@ -67,7 +73,7 @@ const BillsTable = () => {
                     </tbody>
                 </table>
             </div>
-            {(pdfLoading || toast.show) && <Toast mode={toast.mode} message={toast.message} onClose={onClose} />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} />}
         </section>
     )
 }

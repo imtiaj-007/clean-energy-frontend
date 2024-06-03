@@ -8,17 +8,22 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
     const { getBillPDF } = useBillsContext();
     const [toast, setToast] = useState({ mode: '', message: '', show: false });
 
-    const hideToast = () => {
-        setToast(prevState => ({ ...prevState, show: false }));
+    const showToast = (mode, message) => {
+        setToast({ mode, message, show: true });
+        setTimeout(()=> {
+            setToast(prevState => ({ ...prevState, show: false }));
+        }, 5000);
     };
 
     const getPDF = async (e)=> {
         try {
-            setToast({ mode: 'Generating Bill', message: '', show: true })
+            showToast('Generating Bill', '')
             await getBillPDF(e.target.dataset.billid);
+            setToast(prevState => ({ ...prevState, show: false }));
         } catch(err) {
-            setToast({ mode: 'Error', message: 'We\'ll fix it soon ...', show: true })
-        }
+            setToast(prevState => ({ ...prevState, show: false }));
+            showToast('Error', 'We\'ll fix it soon ...')
+        }        
     }
 
     return (
@@ -89,7 +94,7 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                     <button className="btn btn-primary btn-sm mx-3 lable-width" onClick={closeNewBill}>Close</button>
                 </div>
             </div>
-            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} />}
         </div>
     )
 }

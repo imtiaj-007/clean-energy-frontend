@@ -18,13 +18,12 @@ const Contact = () => {
     const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY;
     const [toast, setToast] = useState({ mode: '', message: '', show: false });
 
-    const showToast = (mode, message)=> {
+    const showToast = (mode, message) => {
         setToast({ mode, message, show: true });
-    }
-
-    const hideToast = ()=> {
-        setToast(prevState => ({ ...prevState, show: false }));
-    }
+        setTimeout(()=> {
+            setToast(prevState => ({ ...prevState, show: false }));
+        }, 7000);
+    };
 
     const sendMessage = (e) => {
         e.preventDefault();
@@ -51,7 +50,7 @@ const Contact = () => {
             },
             (error) => {
                 console.log('FAILED...', error.text);
-                setToast('Error', 'Please try again later...')
+                showToast('Error', 'Please try again later...')
             },
         );
         
@@ -162,7 +161,7 @@ const Contact = () => {
                 </div>
 
             </div>
-            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} />}
         </section>
 
     )

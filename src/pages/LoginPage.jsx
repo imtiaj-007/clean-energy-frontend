@@ -11,11 +11,15 @@ const LoginPage = () => {
     const Navigate = useNavigate()
     const [userDetails, setUserDetails] = useState({})
     const [showLoginForm, setshowLoginForm] = useState(true)
-    const [toast, setToast] = useState({ mode: 'Error', message: '', show: false });
+    const [toast, setToast] = useState({ mode: '', message: '', show: false });
 
-    const hideToast = () => {
-        setToast(prevState => ({ ...prevState, show: false }));
+    const showToast = (mode, message) => {
+        setToast({ mode, message, show: true });
+        setTimeout(()=> {
+            setToast(prevState => ({ ...prevState, show: false }));
+        }, 5000);
     };
+
     
     const toogleLogin = (e) => {
         e.preventDefault()
@@ -41,13 +45,11 @@ const LoginPage = () => {
                 
                 if(localStorage.getItem('isAdmin') === 'true')
                     Navigate('/users')
-                else
-                    Navigate('/bills')
                 window.location.reload()
             }
         } catch (error) {
             let message = error.response.data.message;
-            setToast({ mode: toast.mode, message , show: true });
+            showToast(toast.mode, message);
         }
     }
 
@@ -66,12 +68,12 @@ const LoginPage = () => {
             if (token) {
                 localStorage.setItem('authToken', res.data.authToken)
                 localStorage.setItem('isAdmin', res.data.isAdmin)
-                Navigate('/bills')
+                Navigate('/users')
                 window.location.reload()
             }
         } catch (error) {
             let message = error.response.data.message;
-            setToast({ mode: toast.mode, message , show: true });   
+            showToast(toast.mode, message);
         }
     }
 
@@ -99,12 +101,12 @@ const LoginPage = () => {
                                 <form action="#" method="post" className="text-white" onSubmit={handleLogin}>
                                     <div className="form-group mb-3">
                                         <label htmlFor="email">Email</label>
-                                        <input type="email" name="email" id="email" className="form-control" onChange={(e) => setUserDetails({...userDetails, email: e.target.value})} placeholder="example@gmail.com" required />
+                                        <input type="email" name="email" id="email" className="form-control" onChange={(e) => setUserDetails({...userDetails, email: e.target.value})} placeholder="admin@gmail.com" required />
                                     </div>
                                     <div className="form-group mb-4">
                                         <label htmlFor="password">Password</label>
                                         <input type="password" name="password" id="password"
-                                            onChange={(e) => setUserDetails({...userDetails, password: e.target.value})} className="form-control" required />
+                                            onChange={(e) => setUserDetails({...userDetails, password: e.target.value})} className="form-control" placeholder="12345" required />
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center ">
                                         <NavLink to="#" style={{ textDecoration: "underline" }}>Forget Password</NavLink>
@@ -142,7 +144,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
-            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} />}
         </section>
     )
 }

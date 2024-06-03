@@ -11,17 +11,18 @@ const ViewAcknowledgement = ({ type, paymentObj, closeNewReciept }) => {
 
     const showToast = (mode, message) => {
         setToast({ mode, message, show: true });
-    };
-
-    const hideToast = () => {
-        setToast(prevState => ({ ...prevState, show: false }));
+        setTimeout(()=> {
+            setToast(prevState => ({ ...prevState, show: false }));
+        }, 5000);
     };
 
     const getPDF = async (e)=> {
         try {
             showToast('Generating Reciept', '');
             await getRecieptPDF(e.target.dataset.paymentid);
+            setToast(prevState => ({ ...prevState, show: false }));
         } catch(err) {
+            setToast(prevState => ({ ...prevState, show: false }));
             showToast('Error', 'We\'ll fix it soon ...')
         }
     }
@@ -97,7 +98,7 @@ const ViewAcknowledgement = ({ type, paymentObj, closeNewReciept }) => {
                     <button className="btn btn-primary btn-sm mx-3 lable-width" onClick={closeNewReciept}>Close</button>
                 </div>
             </div>
-            {toast.show && <Toast mode={toast.mode} message={toast.message} onClose={hideToast} />}
+            {toast.show && <Toast mode={toast.mode} message={toast.message} />}
         </div>
     )
 }

@@ -77,16 +77,11 @@ const Payments = () => {
         const bill = dueBills.find((bill) => bill._id === e.target.id);
 
         if (bill) {
-            for (const [key, value] of Object.entries(bill)) {
-                curBill[key] = value;
-            }
-
+            setCurBill(curBill);
             let res = await createPayment(curUser._id, curBill._id);
-            for (const [key, value] of Object.entries(res)) {
-                lastReciept[key] = value;
-            }
             console.log(res);
-            setLastReciept(lastReciept)
+            
+            setLastReciept(res);
             setShowForm(false);
             setTimeout(() => {
                 setLoading(false);
@@ -101,13 +96,10 @@ const Payments = () => {
     const findLastTransaction = async () => {
         try {
             setLoading(true)
-            const res = await fetchLastPayment(search);
-            console.log(res)
-            for (const [key, value] of Object.entries(res)) {
-                lastReciept[key] = value;
-            }
+            const res = await fetchLastPayment(search);            
             console.log(res);
-            setLastReciept(lastReciept);
+
+            setLastReciept(res);
             setShowTab('newPayment');
             setType('Fetched');
         } catch (error) {
@@ -119,13 +111,7 @@ const Payments = () => {
         setShowForm(false);
     }
 
-    const closeNewReciept = () => {
-        for (const key of Object.keys(curUser)) {
-            delete curUser[key]
-        }
-        for (const key of Object.keys(curBill)) {
-            delete curBill[key]
-        }
+    const closeNewReciept = () => {        
         setCurUser({});
         setCurBill({});
         setShowTab('viewPayment');
