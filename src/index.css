@@ -232,7 +232,7 @@ th, td {
 }
 
 .img-section img {
-  max-width: 25rem;
+  width: 25rem;
   object-fit: contain;
   margin: auto;
 }
@@ -466,6 +466,12 @@ legend {
   .section-img {
     display: none;
   }
+
+  .img-section img {
+    width: 22.5rem;
+    object-fit: contain;
+    margin: auto;
+  }
 }
 
 
@@ -541,6 +547,28 @@ legend {
 }
 
 @media (max-width: 768px) {
+  .main-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .login-page {
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+  }
+
+  .img-section, .form-section {
+    height: 100%;
+    border-radius: 1rem;
+  }
+
+  .img-section img {
+    width: 20rem;
+    object-fit: contain;
+    margin: auto;
+  }
+
   .applied-filters {
     display: none;
   }
@@ -563,21 +591,6 @@ legend {
   .sm-col-rev {
     flex-direction: column-reverse;
     gap: 1rem;
-  }
-
-  .main-container {
-    width: 100%;
-    height: auto;
-  }
-
-  .login-page {
-    width: 100%;
-    height: auto;
-    margin: 2rem 0;
-  }
-
-  .img-section, .form-section {
-    height: 100%;
   }
 
   .form-container {

@@ -34,7 +34,7 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
 
                     <div className="row g-3 ">
 
-                        <div className={`${type === 'Fetched' ? 'col-6' : 'col-12'} mt-4`}>
+                        <div className={`col-md-12 ${type === 'Fetched' ? 'col-lg-6' : 'col-lg-12'} mt-4`}>
                             <div className="input-group input-group-sm ">
                                 <label className="input-group-text lable-width" htmlFor="viewBillNo">Bill No.</label>
                                 <input type="text" className="form-control" id="viewBillNo" value={billObj._id} readOnly />
@@ -42,7 +42,7 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                         </div>
 
                         {type === 'Fetched' &&
-                            <div className="col-6 mt-4">
+                            <div className="col-md-12 col-lg-6 mt-4">
                                 <div className="input-group input-group-sm ">
                                     <label className="input-group-text lable-width" htmlFor="viewUserName">Name</label>
                                     <input type="text" className="form-control" id="viewUserName" value={userObj.customerName} readOnly />
@@ -50,7 +50,7 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                             </div>
                         }
 
-                        <div className={`${type === 'Fetched' ? 'col-6' : 'col-12'} mt-4`}>
+                        <div className={`col-md-12 ${type === 'Fetched' ? 'col-lg-6' : 'col-lg-12'} mt-4`}>
                             <div className="input-group input-group-sm ">
                                 <label className="input-group-text lable-width" htmlFor="viewUserId">User ID.</label>
                                 <input type="text" className="form-control" id="viewUserId" value={billObj.userID} readOnly />
@@ -58,7 +58,7 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                         </div>
 
                         {type === 'Fetched' &&
-                            <div className="col-6 mt-4">
+                            <div className="col-md-12 col-lg-6 mt-4">
                                 <div className="input-group input-group-sm ">
                                     <label className="input-group-text lable-width" htmlFor="viewEmail">Email</label>
                                     <input type="text" className="form-control" id="viewEmail" value={userObj.email} readOnly />
@@ -66,14 +66,14 @@ const ShowBill = ({ type, billObj, userObj, closeNewBill }) => {
                             </div>
                         }
 
-                        <div className="col-md-12 col-lg-3 mt-4">
+                        <div className="col-md-6 col-lg-3 mt-4">
                             <div className="input-group input-group-sm ">
                                 <label className="input-group-text lable-width" htmlFor="viewUnits">Units</label>
                                 <input type="text" className="form-control" id="viewUnits" value={billObj.units} readOnly />
                             </div>
                         </div>
 
-                        <div className="col-md-12 col-lg-4 mt-4">
+                        <div className="col-md-6 col-lg-4 mt-4">
                             <div className="input-group input-group-sm ">
                                 <label className="input-group-text lable-width" htmlFor="viewAmount">Amount</label>
                                 <input type="text" className="form-control" id="viewAmount" value={billObj.amount} readOnly />

@@ -46,10 +46,8 @@ const LoginPage = () => {
     
             if (token) {
                 localStorage.setItem('authToken', res.data.authToken)
-                localStorage.setItem('isAdmin', res.data.isAdmin)
-                
-                if(localStorage.getItem('isAdmin') === 'true')
-                    Navigate('/users')
+                localStorage.setItem('isAdmin', res.data.isAdmin)                                
+                Navigate('/users')
                 window.location.reload()
             }
             setToast(prevState => ({ ...prevState, show: false }));

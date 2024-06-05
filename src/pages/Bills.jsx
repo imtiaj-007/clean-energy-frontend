@@ -273,7 +273,7 @@ const Bills = () => {
                             </div>
                         </div>
 
-                        <div className="col-md-12 col-lg-7 mt-md-3 p-md-0 pe-lg-0">
+                        <div className="col-md-12 col-lg-7 mt-md-3 m-lg-0 p-md-0 ps-lg-2">
                             {loading && <LoadingSpinner />}
                             {!loading && showTab === 'lastBill' &&
                                 <ShowBill type={type} billObj={curBill} userObj={curUser} closeNewBill={closeNewBill} />
